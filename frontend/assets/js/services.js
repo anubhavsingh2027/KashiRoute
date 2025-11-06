@@ -1,4 +1,4 @@
-const apiurl = `https://go-kashi-backend.onrender.com/goKashi/`;
+const apiurl = `https://go-kashi-backend.onrender.com/KashiRoute/`;
 
 export async function createPackage(packageData) {
   try {
