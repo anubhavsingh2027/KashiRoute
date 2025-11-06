@@ -1,8 +1,8 @@
-const apiurl = `https://go-kashi-backend.onrender.com/`;
-
+const apiurl = `https://go-kashi-backend.onrender.com/goKashi/`;
+goKashi;
 export async function createPackage(packageData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/admin/createPackage`, {
+    const response = await fetch(`${apiurl}admin/createPackage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export async function createPackage(packageData) {
 
 export async function addCar(carData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/admin/addCar`, {
+    const response = await fetch(`${apiurl}admin/addCar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -37,7 +37,7 @@ export async function addCar(carData) {
 // === API: Register User ===
 export async function registerUser(userData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/signup`, {
+    const response = await fetch(`${apiurl}signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -53,7 +53,7 @@ export async function registerUser(userData) {
 // === API: User Login ===
 export async function loginUser(loginData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/login`, {
+    const response = await fetch(`${apiurl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -71,7 +71,7 @@ export async function loginUser(loginData) {
 //===forget Password ===
 export async function forgetPass(forgetData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/forgetPassword`, {
+    const response = await fetch(`${apiurl}forgetPassword`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -89,7 +89,7 @@ export async function forgetPass(forgetData) {
 //===session  required====
 export async function getUserSession() {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/session-user`, {
+    const response = await fetch(`${apiurl}session-user`, {
       credentials: "include",
     });
 
@@ -104,15 +104,12 @@ export async function getUserSession() {
 export async function bookPackage(bookingData) {
   const userId = bookingData.userId;
   try {
-    const response = await fetch(
-      `${apiurl}kashikaTravel/bookPackage/${userId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(bookingData),
-      }
-    );
+    const response = await fetch(`${apiurl}bookPackage/${userId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(bookingData),
+    });
 
     const data = await response.json();
 
@@ -126,15 +123,12 @@ export async function bookPackage(bookingData) {
 export async function bookingCar(bookingData) {
   const userId = bookingData.userId;
   try {
-    const response = await fetch(
-      `${apiurl}kashikaTravel/carbooking/${userId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(bookingData),
-      }
-    );
+    const response = await fetch(`${apiurl}carbooking/${userId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(bookingData),
+    });
 
     const data = await response.json();
 
@@ -147,7 +141,7 @@ export async function bookingCar(bookingData) {
 //===API: Get all Cars ===
 export async function getAllCars() {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/getCar`, {
+    const response = await fetch(`${apiurl}getCar`, {
       credentials: "include",
     });
     const data = await response.json();
@@ -160,7 +154,7 @@ export async function getAllCars() {
 //===API: Get all Packages ===
 export async function getAllPackages() {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/getPackage`, {
+    const response = await fetch(`${apiurl}getPackage`, {
       credentials: "include",
     });
     const data = await response.json();
@@ -173,13 +167,10 @@ export async function getAllPackages() {
 //===API: Delete Car ===
 export async function deleteCar(id) {
   try {
-    const response = await fetch(
-      `${apiurl}kashikaTravel/admin/carDelete/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}admin/carDelete/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -190,13 +181,10 @@ export async function deleteCar(id) {
 //===API: Delete Package ===
 export async function deletePackage(id) {
   try {
-    const response = await fetch(
-      `${apiurl}kashikaTravel/admin/packageDelete/${id}`,
-      {
-        method: "DELETE",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}admin/packageDelete/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -207,7 +195,7 @@ export async function deletePackage(id) {
 //=== API: Get all user ===
 export async function getUsers() {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/getUser`, {
+    const response = await fetch(`${apiurl}getUser`, {
       credentials: "include",
     });
     const data = await response.json();
@@ -220,7 +208,7 @@ export async function getUsers() {
 //===API :Type changed ===
 export async function userTypeChanged(typeData) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/changeUserType`, {
+    const response = await fetch(`${apiurl}changeUserType`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -241,7 +229,7 @@ export async function userTypeChanged(typeData) {
 // === API: User Logout ===
 export async function logoutRequested() {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/logout`, {
+    const response = await fetch(`${apiurl}logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -257,7 +245,7 @@ export async function logoutRequested() {
 
 export async function userHistory(id) {
   try {
-    const response = await fetch(`${apiurl}kashikaTravel/userHistory/${id}`, {
+    const response = await fetch(`${apiurl}userHistory/${id}`, {
       credentials: "include",
     });
 
