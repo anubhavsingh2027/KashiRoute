@@ -8,7 +8,7 @@ function getUserMessage1(carName) {
 
       <!-- Header -->
       <div style="background: linear-gradient(135deg, #2563eb, #1d4ed8); padding: 25px; text-align: center; color: white;">
-        <h1 style="margin: 0; font-size: 26px;">Kashika Travel</h1>
+        <h1 style="margin: 0; font-size: 26px;">Kashi Route</h1>
         <p style="margin: 5px 0 0; font-size: 15px;">Your Journey Begins with Comfort & Care</p>
       </div>
 
@@ -17,7 +17,7 @@ function getUserMessage1(carName) {
         <h2 style="color: #1e40af; margin-bottom: 15px;">🚗 Car Booking Received!</h2>
         <p style="font-size: 16px; color: #475569; line-height: 1.6;">
           Dear Valued Customer,<br><br>
-          Thank you for choosing <strong>Kashika Travel</strong>! We’ve received your booking request
+          Thank you for choosing <strong>Kashi Route</strong>! We’ve received your booking request
           for our <strong style="color:#2563eb;">${carName}</strong> car service.
         </p>
 
@@ -51,7 +51,7 @@ function getUserMessage1(carName) {
         <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
           <p style="font-size:13px; color:#94a3b8;">
             Warm regards,<br>
-            <strong style="color:#1e3a8a;">Kashika Travel Team</strong><br>
+            <strong style="color:#1e3a8a;">Kashi Route Team</strong><br>
             <a href="https://kashika-travel.anubhavsingh.website/" style="color:#2563eb; text-decoration:none;">www.kashika-travel.anubhavsingh.website</a>
           </p>
         </div>
@@ -59,7 +59,7 @@ function getUserMessage1(carName) {
 
       <!-- Footer -->
       <div style="background:#f1f5f9; text-align:center; padding:12px; font-size:12px; color:#94a3b8;">
-        &copy; 2025 Kashika Travel. All Rights Reserved.
+        &copy; 2025 Kashi Route. All Rights Reserved.
       </div>
     </div>
   </div>`;
@@ -95,7 +95,7 @@ function getHostMessage1({ email, userName }) {
       </div>
 
       <div style="background:#f3f4f6; text-align:center; padding:10px; font-size:12px; color:#888;">
-        &copy; 2025 Kashika Travel. All rights reserved.
+        &copy; 2025 Kashi Route. All rights reserved.
       </div>
     </div>
   </div>`;
@@ -106,14 +106,14 @@ export async function SendMailCar(data) {
   const user = {
     to: data.to,
     subject: "Thank You for Using Our Car Rent Service",
-    message: getUserMessage1( data.carName),
+    message: getUserMessage1(data.carName),
   };
 
   const host = {
     to: "anubhavsinghcustomer@gmail.com",
     subject: "New Car Booking Request",
     message: getHostMessage1({
-      email:  data.to,
+      email: data.to,
       userName: data.userName,
     }),
   };
@@ -127,8 +127,6 @@ export async function SendMailCar(data) {
   }
 }
 
-
-
 // 🎨 USER CONFIRMATION TEMPLATE
 function getUserMessage(packageName) {
   return `
@@ -136,7 +134,7 @@ function getUserMessage(packageName) {
     <div style="max-width:600px;margin:auto;background:white;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
 
       <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;text-align:center;padding:20px;">
-        <h1 style="margin:0;">Kashika Travel</h1>
+        <h1 style="margin:0;">Kashi Route</h1>
         <p style="margin:0;font-size:15px;">Booking Confirmation</p>
       </div>
 
@@ -163,18 +161,16 @@ function getUserMessage(packageName) {
 
         <p style="font-size:14px;color:#666;margin-top:25px;">
           For queries, contact our support team anytime.<br>
-          Thank you for choosing <strong>Kashika Travel</strong> 🌍
+          Thank you for choosing <strong>Kashi Route</strong> 🌍
         </p>
       </div>
 
       <div style="background:#f3f4f6;text-align:center;padding:10px;font-size:12px;color:#888;">
-        &copy; 2025 Kashika Travel. All rights reserved.
+        &copy; 2025 Kashi Route. All rights reserved.
       </div>
     </div>
   </div>`;
 }
-
-
 
 function getHostMessage({ email, userName, packageName }) {
   return `
@@ -204,19 +200,18 @@ function getHostMessage({ email, userName, packageName }) {
            Manage Booking
         </a>
 
-        <p style="font-size:13px;color:#888;margin-top:20px;">Kashika Travel Booking System</p>
+        <p style="font-size:13px;color:#888;margin-top:20px;">Kashi Route Booking System</p>
       </div>
 
       <div style="background:#f3f4f6;text-align:center;padding:10px;font-size:12px;color:#888;">
-        &copy; 2025 Kashika Travel. All rights reserved.
+        &copy; 2025 Kashi Route. All rights reserved.
       </div>
     </div>
   </div>`;
 }
 
-
 export async function sendMailPackage(data) {
-  console.log("received data ",data);
+  console.log("received data ", data);
   const user = {
     to: data.to,
     subject: "Your Package Booking is Confirmed 🎉",
@@ -240,4 +235,3 @@ export async function sendMailPackage(data) {
     return false;
   }
 }
-

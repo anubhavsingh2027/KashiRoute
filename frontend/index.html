@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kashika Travel</title>
+    <title>Kashi Route</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -665,7 +665,7 @@
                 <i class="fas fa-om text-white text-xl"></i>
               </div>
               <div>
-                <h3 class="text-2xl font-bold">Kashika Travel</h3>
+                <h3 class="text-2xl font-bold">Kashi Route</h3>
                 <p class="text-gray-400 text-sm">Sacred Journeys</p>
               </div>
             </div>
@@ -731,9 +731,7 @@
         </div>
 
         <div class="border-t border-gray-800 mt-12 pt-8 text-center fade-in">
-          <p class="text-gray-400">
-            © 2024 Kashika Travel. All rights reserved.
-          </p>
+          <p class="text-gray-400">© 2024 Kashi Route. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -903,7 +901,9 @@
             <div class="p-6 space-y-4">
               <div class="h-6 w-3/4 rounded skeleton"></div>
               <div class="grid grid-cols-2 gap-3">
-                ${Array(4).fill('<div class="h-10 rounded-lg skeleton"></div>').join('')}
+                ${Array(4)
+                  .fill('<div class="h-10 rounded-lg skeleton"></div>')
+                  .join("")}
               </div>
               <div class="space-y-2">
                 <div class="h-4 w-full rounded skeleton"></div>
@@ -924,7 +924,9 @@
         if (!packageContainer) return;
 
         // Show skeleton loading
-        packageContainer.innerHTML = Array(6).fill(packageSkeletonCard()).join('');
+        packageContainer.innerHTML = Array(6)
+          .fill(packageSkeletonCard())
+          .join("");
 
         const userSession = await getUserSession();
         const userType = userSession?.user?.userType || "guest";
@@ -940,7 +942,9 @@
           return;
         }
 
-        packageContainer.innerHTML = data.map((pkg) => packageCard(pkg)).join("");
+        packageContainer.innerHTML = data
+          .map((pkg) => packageCard(pkg))
+          .join("");
 
         // attach preview listeners
         document.querySelectorAll(".previewBtn").forEach((btn) => {
@@ -960,7 +964,7 @@
         if (!carContainer) return;
 
         // Show skeleton loading
-        carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join('');
+        carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
 
         const userSession = await getUserSession();
         const userType = userSession?.user?.userType || "guest";
