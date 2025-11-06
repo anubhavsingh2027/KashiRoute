@@ -1,16 +1,15 @@
+const apiurl = `https://go-kashi-backend.onrender.com/`;
+
 export async function createPackage(packageData) {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/admin/createPackage",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(packageData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/admin/createPackage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(packageData),
+    });
 
     const data = await response.json();
 
@@ -22,15 +21,12 @@ export async function createPackage(packageData) {
 
 export async function addCar(carData) {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/admin/addCar",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(carData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/admin/addCar`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(carData),
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -41,15 +37,12 @@ export async function addCar(carData) {
 // === API: Register User ===
 export async function registerUser(userData) {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/signup",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(userData),
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -60,15 +53,12 @@ export async function registerUser(userData) {
 // === API: User Login ===
 export async function loginUser(loginData) {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(loginData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(loginData),
+    });
 
     const data = await response.json();
 
@@ -81,15 +71,12 @@ export async function loginUser(loginData) {
 //===forget Password ===
 export async function forgetPass(forgetData) {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/forgetPassword",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(forgetData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/forgetPassword`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(forgetData),
+    });
 
     const data = await response.json();
 
@@ -102,12 +89,9 @@ export async function forgetPass(forgetData) {
 //===session  required====
 export async function getUserSession() {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/session-user",
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/session-user`, {
+      credentials: "include",
+    });
 
     const data = await response.json();
     return data;
@@ -121,7 +105,7 @@ export async function bookPackage(bookingData) {
   const userId = bookingData.userId;
   try {
     const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/bookPackage/${userId}`,
+      `${apiurl}kashikaTravel/bookPackage/${userId}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -143,7 +127,7 @@ export async function bookingCar(bookingData) {
   const userId = bookingData.userId;
   try {
     const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/carbooking/${userId}`,
+      `${apiurl}kashikaTravel/carbooking/${userId}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -163,12 +147,9 @@ export async function bookingCar(bookingData) {
 //===API: Get all Cars ===
 export async function getAllCars() {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/getCar",
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/getCar`, {
+      credentials: "include",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -179,12 +160,9 @@ export async function getAllCars() {
 //===API: Get all Packages ===
 export async function getAllPackages() {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/getPackage",
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/getPackage`, {
+      credentials: "include",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -196,7 +174,7 @@ export async function getAllPackages() {
 export async function deleteCar(id) {
   try {
     const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/admin/carDelete/${id}`,
+      `${apiurl}kashikaTravel/admin/carDelete/${id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -213,7 +191,7 @@ export async function deleteCar(id) {
 export async function deletePackage(id) {
   try {
     const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/admin/packageDelete/${id}`,
+      `${apiurl}kashikaTravel/admin/packageDelete/${id}`,
       {
         method: "DELETE",
         credentials: "include",
@@ -229,12 +207,9 @@ export async function deletePackage(id) {
 //=== API: Get all user ===
 export async function getUsers() {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/getUser",
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/getUser`, {
+      credentials: "include",
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -245,17 +220,14 @@ export async function getUsers() {
 //===API :Type changed ===
 export async function userTypeChanged(typeData) {
   try {
-    const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/changeUserType`,
-      {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(typeData),
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/changeUserType`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(typeData),
+    });
 
     const data = await response.json();
     return data;
@@ -269,13 +241,10 @@ export async function userTypeChanged(typeData) {
 // === API: User Logout ===
 export async function logoutRequested() {
   try {
-    const response = await fetch(
-      "https://kt-backend.anubhavsingh.website/kashikaTravel/logout",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
 
     const data = await response.json();
     return data;
@@ -288,12 +257,9 @@ export async function logoutRequested() {
 
 export async function userHistory(id) {
   try {
-    const response = await fetch(
-      `https://kt-backend.anubhavsingh.website/kashikaTravel/userHistory/${id}`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${apiurl}kashikaTravel/userHistory/${id}`, {
+      credentials: "include",
+    });
 
     const data = await response.json();
     return data;
