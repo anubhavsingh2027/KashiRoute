@@ -1,0 +1,178 @@
+/* style.css - Loading / greeting overlay + reveal animations
+   Kept lightweight and performant. No external libs required.
+*/
+
+:root{
+  --overlay-dark: rgba(6,6,23,0.75);
+  --overlay-grad-top: rgba(2,6,23,0.55);
+  --sacred-gold: #f59e0b;
+}
+
+/* Loading overlay base */
+.loading-overlay{
+  pointer-events: auto;
+}
+.loading-backdrop{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(2,6,23,0.55) 0%, rgba(6,6,23,0.7) 60%), url('https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=1600&q=60') center/cover no-repeat;
+  filter: blur(6px) saturate(0.9);
+  opacity: 0.95;
+}
+
+.loading-inner{
+  position: relative;
+  z-index: 10;
+  max-width: 960px;
+  padding: 2rem;
+}
+
+.greetings .greeting-line{
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms cubic-bezier(.2,.9,.2,1), transform 700ms cubic-bezier(.2,.9,.2,1);
+  will-change: opacity, transform;
+  font-weight: 700;
+}
+
+.greetings .greeting-line:nth-child(1){
+  font-size: 2rem;
+  letter-spacing: 0.6px;
+}
+.greetings .greeting-line:nth-child(2){
+  margin-top: 0.6rem;
+  font-size: 1.25rem;
+  font-weight:600;
+  color: rgba(255,255,255,0.95);
+}
+.greetings .greeting-line.sub{
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  font-weight:500;
+}
+
+/* When JS adds .show to each line */
+.greetings .greeting-line.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Subtle loader bar */
+.loader-subtle{
+  width: 180px;
+  height: 6px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  overflow: hidden;
+  position: relative;
+}
+.loader-subtle::before{
+  content: '';
+  position: absolute;
+  top:0; left:-40%;
+  height:100%; width:40%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.35), rgba(255,255,255,0.15));
+  transform: skewX(-10deg);
+  animation: shimmer 2.8s linear infinite;
+}
+
+@keyframes shimmer{
+  to{ left: 120%; }
+}
+
+/* Diya / particle field (subtle floating lights) */
+.diya-field{
+  position: absolute;
+  inset: -10% -20% auto -20%;
+  height: 60%;
+  pointer-events: none;
+  z-index: 5;
+}
+.diya{
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 40% 30%, rgba(255,230,160,0.95) 0%, rgba(245,158,11,0.12) 40%, rgba(245,158,11,0.03) 60%, rgba(245,158,11,0) 100%);
+  filter: blur(6px) drop-shadow(0 6px 18px rgba(245,158,11,0.08));
+  opacity: 0.9;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* floating animations with different durations for natural effect */
+@keyframes floatY{
+  0%{ transform: translateY(0) scale(1); opacity:0.95 }
+  50%{ transform: translateY(-24px) scale(1.06); opacity:1 }
+  100%{ transform: translateY(0) scale(1); opacity:0.9 }
+}
+
+/* Overlay fade-out */
+.loading-overlay.fade-out{
+  transition: opacity 900ms cubic-bezier(.2,.9,.2,1) 0s, visibility 900ms;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* When overlay hides, allow body scroll */
+body.loaded {
+  overflow: auto !important;
+}
+
+/* Hero reveal animations after overlay disappears */
+.hero-title.revealed{
+  opacity: 1 !important;
+  transform: scale(1) translateY(0) !important;
+  transition: opacity 900ms cubic-bezier(.2,.9,.2,1), transform 900ms cubic-bezier(.2,.9,.2,1);
+}
+.hero-sub.revealed{
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 900ms 200ms cubic-bezier(.2,.9,.2,1), transform 900ms 200ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Buttons animations */
+.btn-explore.enter{
+  animation: bounceIn 900ms cubic-bezier(.22,.9,.2,1) forwards;
+}
+.btn-book.enter{
+  transform: translateY(18px) scale(0.99);
+  opacity: 0;
+  animation: slideInUp 700ms cubic-bezier(.2,.9,.2,1) 120ms forwards;
+}
+
+@keyframes bounceIn{
+  0%{ transform: translateY(40px) scale(.96); opacity:0 }
+  60%{ transform: translateY(-8px) scale(1.02); opacity:1 }
+  100%{ transform: translateY(0) scale(1); }
+}
+@keyframes slideInUp{
+  to{ transform: translateY(0) scale(1); opacity:1 }
+}
+
+/* Hover glows for buttons and icons */
+.btn-explore:hover{
+  box-shadow: 0 12px 40px rgba(59,130,246,0.14), 0 4px 16px rgba(124,58,237,0.06);
+  transform: translateY(-3px) scale(1.01);
+}
+.btn-book:hover{
+  box-shadow: 0 14px 50px rgba(0,0,0,0.12);
+}
+
+/* Gentle icon hover scale */
+a .fas, button .fas{
+  transition: transform 180ms ease;
+}
+a:hover .fas, button:hover .fas{
+  transform: scale(1.05);
+}
+
+/* Ensure overlay content centers nicely on small screens */
+@media (max-width:640px){
+  .greetings .greeting-line:nth-child(1){ font-size:1.4rem; }
+  .greetings .greeting-line:nth-child(2){ font-size:1rem; }
+}
+
+/* Keep these small so they don't conflict with your existing Tailwind utilities */
+
