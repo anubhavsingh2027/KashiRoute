@@ -66,8 +66,11 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 ## 📂 Project Directory
 
 KashiRoute/
+
 ├─ frontend/ # User & Admin UI
+
 ├─ backend/ # API, DB Models, Mail API, Auth, Controllers
+
 └─ README.md
 
 yaml
