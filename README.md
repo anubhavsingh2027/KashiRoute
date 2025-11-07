@@ -29,6 +29,9 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 | **Book Car** | Rent a car with required details and pricing |
 | **Booking History** | Users can check all past bookings anytime |
 | **Contact Page** | Users can send queries or contact the support team |
+| **User Forgot Password** | Secure authentication and recovery |
+| **📧 OTP Verification** | OTP is sent to user's email via **custom Mail API** during authentication or sensitive actions |
+| **🔔 Booking Update Notifications** | Booking confirmation and status updates are automatically emailed to the user |
 
 ---
 
@@ -40,6 +43,7 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 | **Manage Packages** | Add / Update / Delete travel packages |
 | **Manage Cars** | Add / Update / Delete available cars (Admin managed) |
 | **View All Bookings** | Check bookings from all users |
+| **Update Booking Status** | Admin can update booking status and user receives mail notification |
 | **View All Users** | View user accounts and their roles |
 | **Change User Roles** | Users can be assigned `user` or `host` roles |
 | **Independent Frontend & Backend** | Clean, professional architecture |
@@ -53,8 +57,9 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 | **Frontend** | HTML, Tailwind CSS, JavaScript |
 | **Backend** | Node.js, Express.js |
 | **Database** | MongoDB |
+| **Email Notification / OTP** | Custom Mail API (Node Mailer API / SMTP) |
 | **Authentication** | JWT / Sessions |
-| **Deployment** | Vercel / Render / Railway / Other |
+| **Deployment** | Vercel / Render / Koyeb |
 
 ---
 
@@ -62,7 +67,7 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 
 KashiRoute/
 ├─ frontend/ # User & Admin UI
-├─ backend/ # API, DB Models, Auth, Controllers
+├─ backend/ # API, DB Models, Mail API, Auth, Controllers
 └─ README.md
 
 yaml
@@ -74,9 +79,9 @@ Copy code
 
 | Role | Capabilities |
 |------|-------------|
-| **User** | Book cars & packages, view booking history |
+| **User** | Book cars & packages, view booking history, receive OTP & booking updates |
 | **Host** | (Optional role) Can manage some listings |
-| **Admin** | Full dashboard control |
+| **Admin** | Full dashboard control & notification control |
 
 ---
 
