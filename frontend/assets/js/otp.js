@@ -47,7 +47,7 @@ function createOtpHtmlTemplate({ email, otp }) {
       </div>
       <div style="background:#f8f9fa;padding:25px;text-align:center;color:#6c757d;font-size:12px;border-top:1px solid #dee2e6;">
         <p>Email sent at ${sentTime}</p>
-        <p>&copy; ${currentYear} PhishShield. All rights reserved.</p>
+        <p>&copy; ${currentYear} Kashi Route. All rights reserved.</p>
       </div>
     </div>
   </div>

@@ -261,7 +261,7 @@ export async function sendMail(data) {
   const payload = {
     to: data.to,
     subject: data.subject,
-    websiteName: "Kashika Travel",
+    websiteName: "Kashi Route",
     message: data.message,
   };
 

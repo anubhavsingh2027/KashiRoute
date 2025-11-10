@@ -49,7 +49,7 @@ exports.postSignUp = async (req, res) => {
     //  Send same type of response as postLogin
     res.status(200).json({
       status: true,
-      message: `Welcome to kashika Travel Mrs/Mr  ${userName}`,
+      message: `Welcome to kashi Route Mrs/Mr  ${userName}`,
       isLoggedIn: true,
       user: safeUser,
     });
