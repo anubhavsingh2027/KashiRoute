@@ -52,7 +52,7 @@ function getUserMessage1(carName) {
           <p style="font-size:13px; color:#94a3b8;">
             Warm regards,<br>
             <strong style="color:#1e3a8a;">Kashi Route Team</strong><br>
-            <a href="https://kashiroute.nav-code.com/" style="color:#2563eb; text-decoration:none;">www.kashika-travel.anubhavsingh.website</a>
+            <a href="https://kashiroute.nav-code.com/" style="color:#2563eb; text-decoration:none;">Visit kashiroute</a>
           </p>
         </div>
       </div>
@@ -153,7 +153,7 @@ function getUserMessage(packageName) {
              style="background:#2563eb;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;margin:5px;display:inline-block;">
              View More Packages
           </a>
-          <a href="https://portfolio.anubhavsingh.website/"
+          <a href="https://anubhav.nav-code.com/"
              style="background:#16a34a;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;margin:5px;display:inline-block;">
              My Portfolio
           </a>
