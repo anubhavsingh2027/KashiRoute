@@ -970,6 +970,11 @@
           .fill(packageSkeletonCard())
           .join("");
 
+          if (!carContainer) return;
+
+        // Show skeleton loading
+        carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
+
         const userSession = await getUserSession();
         const userType = userSession?.user?.userType || "guest";
 
