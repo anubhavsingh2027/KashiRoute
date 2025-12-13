@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 // ===== CORS setup (CRITICAL) =====
 app.use(cors({
-  origin: ["https://kashika-tours-and-travels.anubhavsingh.website"],
+  origin: ["https://kashiroute.nav-code.com"],
   credentials: true,
 }));
 
