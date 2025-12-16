@@ -2,16 +2,16 @@
       import {
         mountUtilities,
         initScrollReveal,
-      } from "";
+      } from "./tailwind-init.js";
       import {
         getAllPackages,
         getUserSession,
         getAllCars,
-      } from "./assets/js/services.js";
+      } from "./services.js";
       import {
         openModal,
         initTestimonials,
-      } from "./assets/js/ui-components.js";
+      } from "./ui-components.js";
 
       // Keep your EXACT original packageCard function - only enhance styling
       function packageCard(pkg) {
