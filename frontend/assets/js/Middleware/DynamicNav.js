@@ -113,7 +113,7 @@ async function loadNavbar() {
       ];
     }
 
-    const current = window.location.pathname.split("/").pop() || "/";
+    const current = window.location.pathname.split("/home").pop() || "/home";
 
     // Build navbar markup
     const navContent = `
@@ -132,7 +132,7 @@ async function loadNavbar() {
         <div class="hidden md:flex items-center justify-end flex-1 overflow-x-auto space-x-0.5 px-2">
           ${links
             .map((link, index) =>
-              buildLinkHtml(link, link.href.split("/").pop() === current)
+              buildLinkHtml(link, link.href.split("/home").pop() === current)
             )
             .join("")}
         </div>
