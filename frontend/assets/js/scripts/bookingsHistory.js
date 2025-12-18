@@ -4,8 +4,12 @@
       const packageBtn = document.getElementById("packageBtn");
       const carBtn = document.getElementById("carBtn");
       const bookingList = document.getElementById("bookingList");
+      const emailSearch = document.getElementById("emailSearch");
+      const sortFilter = document.getElementById("sortFilter");
 
       let usersData = [];
+      let currentType = "package";
+      let sortOrder = "newest";
 
       // === Fetch all users once ===
       async function loadUsers() {
@@ -23,15 +27,39 @@
         }
       }
 
-      // === Render bookings based on selected type ===
-      function renderBookings(type) {
-        bookingList.innerHTML = "";
-
-        const usersWithBookings = usersData.filter((user) =>
+      // === Filter users by email and type ===
+      function getFilteredUsers(type, searchEmail) {
+        let filtered = usersData.filter((user) =>
           type === "package"
             ? user.packageBook?.length
             : user.carBooking?.length
         );
+
+        if (searchEmail.trim()) {
+          filtered = filtered.filter((user) =>
+            user.email.toLowerCase().includes(searchEmail.toLowerCase())
+          );
+        }
+
+        return filtered;
+      }
+
+      // === Sort bookings by date ===
+      function sortBookingsByDate(bookings, order) {
+        return [...bookings].sort((a, b) => {
+          const dateA = new Date(a.bookingDate);
+          const dateB = new Date(b.bookingDate);
+          return order === "newest" ? dateB - dateA : dateA - dateB;
+        });
+      }
+
+      // === Render bookings based on selected type ===
+      function renderBookings(type) {
+        currentType = type;
+        bookingList.innerHTML = "";
+
+        const searchEmail = emailSearch.value;
+        const usersWithBookings = getFilteredUsers(type, searchEmail);
 
         if (usersWithBookings.length === 0) {
           bookingList.innerHTML = `<div class="no-data fade-in">
@@ -56,10 +84,8 @@
           let totalBookings = 0;
 
           if (type === "package") {
-            // Sort package bookings by bookingDate (latest first)
-            const sortedPackage = [...user.packageBook].sort(
-              (a, b) => new Date(b.bookingDate) - new Date(a.bookingDate)
-            );
+            // Sort package bookings by date based on filter
+            const sortedPackage = sortBookingsByDate(user.packageBook, sortOrder);
             totalBookings = sortedPackage.length;
 
             bookingsHTML = sortedPackage
@@ -91,10 +117,8 @@
               )
               .join("");
           } else {
-            // Sort car bookings by bookingDate (latest first)
-            const sortedCar = [...user.carBooking].sort(
-              (a, b) => new Date(b.bookingDate) - new Date(a.bookingDate)
-            );
+            // Sort car bookings by date based on filter
+            const sortedCar = sortBookingsByDate(user.carBooking, sortOrder);
             totalBookings = sortedCar.length;
 
             bookingsHTML = sortedCar
@@ -176,6 +200,17 @@
         packageBtn.className =
           "btn-secondary px-8 py-4 text-white rounded-xl font-semibold text-lg";
         renderBookings("car");
+      });
+
+      // === Search Event Listener ===
+      emailSearch.addEventListener("input", () => {
+        renderBookings(currentType);
+      });
+
+      // === Sort Event Listener ===
+      sortFilter.addEventListener("change", (e) => {
+        sortOrder = e.target.value;
+        renderBookings(currentType);
       });
 
       // === Initialize ===
