@@ -1,4 +1,3 @@
-
       import { getUserSession, userHistory } from "../Middleware/services.js";
 
       async function loadUserData() {
