@@ -1,96 +1,93 @@
+import { getUsers } from "../Middleware/services.js";
 
-      import { getUsers } from "../Middleware/services.js";
+const packageBtn = document.getElementById("packageBtn");
+const carBtn = document.getElementById("carBtn");
+const bookingList = document.getElementById("bookingList");
+const emailSearch = document.getElementById("emailSearch");
+const sortFilter = document.getElementById("sortFilter");
 
-      const packageBtn = document.getElementById("packageBtn");
-      const carBtn = document.getElementById("carBtn");
-      const bookingList = document.getElementById("bookingList");
-      const emailSearch = document.getElementById("emailSearch");
-      const sortFilter = document.getElementById("sortFilter");
+let usersData = [];
+let currentType = "package";
+let sortOrder = "newest";
 
-      let usersData = [];
-      let currentType = "package";
-      let sortOrder = "newest";
+// === Fetch all users once ===
+async function loadUsers() {
+  try {
+    const data = await getUsers();
+    if (data.error) {
+      bookingList.innerHTML = `<div class="no-data fade-in"><i class="fas fa-exclamation-triangle text-4xl mb-4"></i><p>Error loading users: ${data.message}</p></div>`;
+      return;
+    }
+    usersData = data.users || data;
 
-      // === Fetch all users once ===
-      async function loadUsers() {
-        try {
-          const data = await getUsers();
-          if (data.error) {
-            bookingList.innerHTML = `<div class="no-data fade-in"><i class="fas fa-exclamation-triangle text-4xl mb-4"></i><p>Error loading users: ${data.message}</p></div>`;
-            return;
-          }
-          usersData = data.users || data;
+    renderBookings("package"); // default view
+  } catch (err) {
+    bookingList.innerHTML = `<div class="no-data fade-in"><i class="fas fa-exclamation-triangle text-4xl mb-4"></i><p>Error loading users.</p></div>`;
+  }
+}
 
-          renderBookings("package"); // default view
-        } catch (err) {
-          bookingList.innerHTML = `<div class="no-data fade-in"><i class="fas fa-exclamation-triangle text-4xl mb-4"></i><p>Error loading users.</p></div>`;
-        }
-      }
+// === Filter users by email and type ===
+function getFilteredUsers(type, searchEmail) {
+  let filtered = usersData.filter((user) =>
+    type === "package" ? user.packageBook?.length : user.carBooking?.length
+  );
 
-      // === Filter users by email and type ===
-      function getFilteredUsers(type, searchEmail) {
-        let filtered = usersData.filter((user) =>
-          type === "package"
-            ? user.packageBook?.length
-            : user.carBooking?.length
-        );
+  if (searchEmail.trim()) {
+    filtered = filtered.filter((user) =>
+      user.email.toLowerCase().includes(searchEmail.toLowerCase())
+    );
+  }
 
-        if (searchEmail.trim()) {
-          filtered = filtered.filter((user) =>
-            user.email.toLowerCase().includes(searchEmail.toLowerCase())
-          );
-        }
+  return filtered;
+}
 
-        return filtered;
-      }
+// === Sort bookings by date ===
+function sortBookingsByDate(bookings, order) {
+  return [...bookings].sort((a, b) => {
+    const dateA = new Date(a.bookingDate);
+    const dateB = new Date(b.bookingDate);
+    return order === "newest" ? dateB - dateA : dateA - dateB;
+  });
+}
 
-      // === Sort bookings by date ===
-      function sortBookingsByDate(bookings, order) {
-        return [...bookings].sort((a, b) => {
-          const dateA = new Date(a.bookingDate);
-          const dateB = new Date(b.bookingDate);
-          return order === "newest" ? dateB - dateA : dateA - dateB;
-        });
-      }
+// === Render bookings based on selected type ===
+function renderBookings(type) {
+  currentType = type;
+  bookingList.innerHTML = "";
 
-      // === Render bookings based on selected type ===
-      function renderBookings(type) {
-        currentType = type;
-        bookingList.innerHTML = "";
+  const searchEmail = emailSearch.value;
+  const usersWithBookings = getFilteredUsers(type, searchEmail);
 
-        const searchEmail = emailSearch.value;
-        const usersWithBookings = getFilteredUsers(type, searchEmail);
-
-        if (usersWithBookings.length === 0) {
-          bookingList.innerHTML = `<div class="no-data fade-in">
+  if (usersWithBookings.length === 0) {
+    bookingList.innerHTML = `<div class="no-data fade-in">
         <i class="fas fa-inbox text-6xl mb-4 opacity-50"></i>
         <p class="text-xl mb-2">No ${
           type === "package" ? "Package" : "Car Rent"
         } bookings found</p>
         <p class="text-sm opacity-70">Bookings will appear here once customers make reservations</p>
       </div>`;
-          return;
-        }
+    return;
+  }
 
-        // Add fade-in animation to the container
-        bookingList.classList.add("fade-in");
+  // Add fade-in animation to the container
+  bookingList.classList.add("fade-in");
 
-        usersWithBookings.forEach((user, index) => {
-          const userBlock = document.createElement("div");
-          userBlock.className = "user-block card-hover";
-          userBlock.style.animationDelay = `${index * 0.1}s`;
+  usersWithBookings.forEach((user, index) => {
+    const userBlock = document.createElement("div");
+    userBlock.className = "user-block card-hover";
+    userBlock.style.animationDelay = `${index * 0.1}s`;
 
-          let bookingsHTML = "";
-          let totalBookings = 0;
+    let bookingsHTML = "";
+    let totalBookings = 0;
 
-          if (type === "package") {
-            // Sort package bookings by date based on filter
-            const sortedPackage = sortBookingsByDate(user.packageBook, sortOrder);
-            totalBookings = sortedPackage.length;
+    if (type === "package") {
+      // Sort package bookings by date based on filter
+      const sortedPackage = sortBookingsByDate(user.packageBook, sortOrder);
+      totalBookings = sortedPackage.length;
 
-            bookingsHTML = sortedPackage
-              .map(
-                (b) => `
+      bookingsHTML = sortedPackage
+        .map(
+          (b) => `
           <div class="booking-item">
             <div class="flex items-center justify-between">
               <div class="flex items-center">
@@ -114,16 +111,16 @@
             </div>
           </div>
         `
-              )
-              .join("");
-          } else {
-            // Sort car bookings by date based on filter
-            const sortedCar = sortBookingsByDate(user.carBooking, sortOrder);
-            totalBookings = sortedCar.length;
+        )
+        .join("");
+    } else {
+      // Sort car bookings by date based on filter
+      const sortedCar = sortBookingsByDate(user.carBooking, sortOrder);
+      totalBookings = sortedCar.length;
 
-            bookingsHTML = sortedCar
-              .map(
-                (b) => `
+      bookingsHTML = sortedCar
+        .map(
+          (b) => `
           <div class="booking-item">
             <div class="flex items-center justify-between">
               <div class="flex items-center">
@@ -150,11 +147,11 @@
             </div>
           </div>
         `
-              )
-              .join("");
-          }
+        )
+        .join("");
+    }
 
-          userBlock.innerHTML = `
+    userBlock.innerHTML = `
         <div class="user-header flex items-center justify-between">
           <div class="flex items-center">
             <i class="fas fa-user-circle text-2xl mr-3"></i>
@@ -181,37 +178,37 @@
         </div>
       `;
 
-          bookingList.appendChild(userBlock);
-        });
-      }
+    bookingList.appendChild(userBlock);
+  });
+}
 
-      // === Button Event Listeners ===
-      packageBtn.addEventListener("click", () => {
-        packageBtn.className =
-          "btn-primary px-8 py-4 text-white rounded-xl font-semibold text-lg shadow-lg";
-        carBtn.className =
-          "btn-secondary px-8 py-4 text-white rounded-xl font-semibold text-lg";
-        renderBookings("package");
-      });
+// === Button Event Listeners ===
+packageBtn.addEventListener("click", () => {
+  packageBtn.className =
+    "btn-primary px-8 py-4 text-white rounded-xl font-semibold text-lg shadow-lg";
+  carBtn.className =
+    "btn-secondary px-8 py-4 text-white rounded-xl font-semibold text-lg";
+  renderBookings("package");
+});
 
-      carBtn.addEventListener("click", () => {
-        carBtn.className =
-          "btn-primary px-8 py-4 text-white rounded-xl font-semibold text-lg shadow-lg";
-        packageBtn.className =
-          "btn-secondary px-8 py-4 text-white rounded-xl font-semibold text-lg";
-        renderBookings("car");
-      });
+carBtn.addEventListener("click", () => {
+  carBtn.className =
+    "btn-primary px-8 py-4 text-white rounded-xl font-semibold text-lg shadow-lg";
+  packageBtn.className =
+    "btn-secondary px-8 py-4 text-white rounded-xl font-semibold text-lg";
+  renderBookings("car");
+});
 
-      // === Search Event Listener ===
-      emailSearch.addEventListener("input", () => {
-        renderBookings(currentType);
-      });
+// === Search Event Listener ===
+emailSearch.addEventListener("input", () => {
+  renderBookings(currentType);
+});
 
-      // === Sort Event Listener ===
-      sortFilter.addEventListener("change", (e) => {
-        sortOrder = e.target.value;
-        renderBookings(currentType);
-      });
+// === Sort Event Listener ===
+sortFilter.addEventListener("change", (e) => {
+  sortOrder = e.target.value;
+  renderBookings(currentType);
+});
 
-      // === Initialize ===
-      loadUsers();
+// === Initialize ===
+loadUsers();
