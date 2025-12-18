@@ -1,21 +1,18 @@
- // Keep your exact original script
-      import {
-        mountUtilities,
-        initScrollReveal,
-      } from "../tailwind-init.js";
-      import {
-        getAllPackages,
-        getUserSession,
-        getAllCars,
-      } from "../services.js";
-      import {
-        openModal,
-        initTestimonials,
-      } from "../ui-components.js";
+// Keep your exact original script
+import {
+  mountUtilities,
+  initScrollReveal,
+} from "../Middleware/tailwind-init.js";
+import {
+  getAllPackages,
+  getUserSession,
+  getAllCars,
+} from "../Middleware/services.js";
+import { openModal, initTestimonials } from "../Middleware/ui-components.js";
 
-      // Keep your EXACT original packageCard function - only enhance styling
-      function packageCard(pkg) {
-        return `
+// Keep your EXACT original packageCard function - only enhance styling
+function packageCard(pkg) {
+  return `
       <article class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden group hover:-translate-y-1 enhanced-card">
         <div class="relative overflow-hidden aspect-[4/3]">
           <img src="${pkg.url}" alt="${pkg.packageName}" class="w-full h-full object-cover transform transition duration-700 group-hover:scale-110" />
@@ -65,11 +62,11 @@
         </div>
       </article>
     `;
-      }
+}
 
-      // Keep your EXACT original carCard function - only enhance styling
-      function carCard(car) {
-        return `
+// Keep your EXACT original carCard function - only enhance styling
+function carCard(car) {
+  return `
       <article class="bg-gradient-to-br from-white to-slate-50/80 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden group hover:-translate-y-1 enhanced-card">
         <div class="relative overflow-hidden aspect-[5/3]">
           <img src="${car.url}" alt="${car.carName}" class="w-full h-full object-cover transform transition duration-700 group-hover:scale-110" />
@@ -127,11 +124,11 @@
         </div>
       </article>
     `;
-      }
+}
 
-      // Skeleton templates
-      function packageSkeletonCard() {
-        return `
+// Skeleton templates
+function packageSkeletonCard() {
+  return `
           <article class="bg-white rounded-2xl shadow-lg overflow-hidden skeleton-card">
             <div class="relative aspect-[4/3] skeleton"></div>
             <div class="p-6 space-y-4">
@@ -150,10 +147,10 @@
             </div>
           </article>
         `;
-      }
+}
 
-      function carSkeletonCard() {
-        return `
+function carSkeletonCard() {
+  return `
           <article class="bg-white rounded-2xl shadow-lg overflow-hidden skeleton-card">
             <div class="relative aspect-[5/3] skeleton"></div>
             <div class="p-6 space-y-4">
@@ -174,160 +171,154 @@
             </div>
           </article>
         `;
+}
+
+// Keep ALL your original functions exactly the same
+async function loadPackages() {
+  const packageContainer = document.getElementById("packageContainer");
+  if (!packageContainer) return;
+
+  // Show skeleton loading
+  packageContainer.innerHTML = Array(6).fill(packageSkeletonCard()).join("");
+
+  if (!carContainer) return;
+
+  // Show skeleton loading
+  carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
+
+  const userSession = await getUserSession();
+  const userType = userSession?.user?.userType || "guest";
+
+  const data = await getAllPackages();
+
+  if (data.error) {
+    packageContainer.textContent = "Failed to load packages.";
+    return;
+  }
+  if (data.length === 0) {
+    packageContainer.textContent = "No packages available.";
+    return;
+  }
+
+  packageContainer.innerHTML = data.map((pkg) => packageCard(pkg)).join("");
+
+  // attach preview listeners
+  document.querySelectorAll(".previewBtn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const id = btn.dataset.id;
+      const type = btn.dataset.type;
+      const item = data.find((d) => d._id === id);
+      if (item) {
+        openModal(item, type);
       }
+    });
+  });
+}
 
-      // Keep ALL your original functions exactly the same
-      async function loadPackages() {
-        const packageContainer = document.getElementById("packageContainer");
-        if (!packageContainer) return;
+async function loadCars() {
+  const carContainer = document.getElementById("carContainer");
+  if (!carContainer) return;
 
-        // Show skeleton loading
-        packageContainer.innerHTML = Array(6)
-          .fill(packageSkeletonCard())
-          .join("");
+  // Show skeleton loading
+  carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
 
-          if (!carContainer) return;
+  const userSession = await getUserSession();
+  const userType = userSession?.user?.userType || "guest";
 
-        // Show skeleton loading
-        carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
+  const data = await getAllCars();
+  const container = document.getElementById("carContainer");
 
-        const userSession = await getUserSession();
-        const userType = userSession?.user?.userType || "guest";
+  if (!container) return;
+  if (data.error) {
+    container.textContent = "Failed to load cars.";
+    return;
+  }
+  if (data.length === 0) {
+    container.textContent = "No cars available.";
+    return;
+  }
 
-        const data = await getAllPackages();
+  container.innerHTML = data.map((car) => carCard(car)).join("");
 
-        if (data.error) {
-          packageContainer.textContent = "Failed to load packages.";
-          return;
-        }
-        if (data.length === 0) {
-          packageContainer.textContent = "No packages available.";
-          return;
-        }
-
-        packageContainer.innerHTML = data
-          .map((pkg) => packageCard(pkg))
-          .join("");
-
-        // attach preview listeners
-        document.querySelectorAll(".previewBtn").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            const id = btn.dataset.id;
-            const type = btn.dataset.type;
-            const item = data.find((d) => d._id === id);
-            if (item) {
-              openModal(item, type);
-            }
-          });
-        });
+  document.querySelectorAll(".previewBtn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const id = btn.dataset.id;
+      const type = btn.dataset.type;
+      const item = data.find((d) => d._id === id);
+      if (item) {
+        openModal(item, type);
       }
+    });
+  });
+}
 
-      async function loadCars() {
-        const carContainer = document.getElementById("carContainer");
-        if (!carContainer) return;
-
-        // Show skeleton loading
-        carContainer.innerHTML = Array(6).fill(carSkeletonCard()).join("");
-
-        const userSession = await getUserSession();
-        const userType = userSession?.user?.userType || "guest";
-
-        const data = await getAllCars();
-        const container = document.getElementById("carContainer");
-
-        if (!container) return;
-        if (data.error) {
-          container.textContent = "Failed to load cars.";
-          return;
+// Simple scroll animation
+function initScrollAnimations() {
+  const elements = document.querySelectorAll(".fade-in");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
         }
-        if (data.length === 0) {
-          container.textContent = "No cars available.";
-          return;
-        }
+      });
+    },
+    { threshold: 0.1 }
+  );
 
-        container.innerHTML = data.map((car) => carCard(car)).join("");
+  elements.forEach((el) => observer.observe(el));
+}
 
-        document.querySelectorAll(".previewBtn").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            const id = btn.dataset.id;
-            const type = btn.dataset.type;
-            const item = data.find((d) => d._id === id);
-            if (item) {
-              openModal(item, type);
-            }
-          });
-        });
-      }
+// Enhanced Testimonials Functionality
+const testimonials = [
+  {
+    content:
+      "Our spiritual journey through Varanasi was absolutely transformative. The attention to detail and deep knowledge of our guide made every moment special. From the morning boat rides to evening aartis, everything was perfectly organized.",
+    author: "Rajesh Sharma",
+    location: "Delhi, India",
+    avatar: "https://i.pravatar.cc/150?img=11",
+    rating: 5,
+  },
+  {
+    content:
+      "The car service was immaculate and our driver was extremely professional. He knew all the shortcuts and best timings to visit temples, which made our pilgrimage so much smoother. Highly recommended!",
+    author: "Sarah Williams",
+    location: "London, UK",
+    avatar: "https://i.pravatar.cc/150?img=5",
+    rating: 5,
+  },
+  {
+    content:
+      "What an incredible experience! The team went above and beyond to ensure we had the most authentic and comfortable stay in Varanasi. The cultural insights and local connections made all the difference.",
+    author: "Priya Patel",
+    location: "Mumbai, India",
+    avatar: "https://i.pravatar.cc/150?img=9",
+    rating: 5,
+  },
+];
 
-      // Simple scroll animation
-      function initScrollAnimations() {
-        const elements = document.querySelectorAll(".fade-in");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1 }
-        );
+function initEnhancedTestimonials() {
+  const carousel = document.getElementById("testimonialCarousel");
+  const content = carousel.querySelector(".testimonial-content");
+  const prevBtn = document.getElementById("prevTestimonial");
+  const nextBtn = document.getElementById("nextTestimonial");
+  let currentIndex = 0;
 
-        elements.forEach((el) => observer.observe(el));
-      }
+  // Create indicators
+  const indicators = document.createElement("div");
+  indicators.className = "flex items-center justify-center gap-2 mt-8";
+  testimonials.forEach((_, index) => {
+    const dot = document.createElement("button");
+    dot.className = `testimonial-indicator ${index === 0 ? "active" : ""}`;
+    dot.addEventListener("click", () => goToSlide(index));
+    indicators.appendChild(dot);
+  });
+  carousel.appendChild(indicators);
 
-      // Enhanced Testimonials Functionality
-      const testimonials = [
-        {
-          content:
-            "Our spiritual journey through Varanasi was absolutely transformative. The attention to detail and deep knowledge of our guide made every moment special. From the morning boat rides to evening aartis, everything was perfectly organized.",
-          author: "Rajesh Sharma",
-          location: "Delhi, India",
-          avatar: "https://i.pravatar.cc/150?img=11",
-          rating: 5,
-        },
-        {
-          content:
-            "The car service was immaculate and our driver was extremely professional. He knew all the shortcuts and best timings to visit temples, which made our pilgrimage so much smoother. Highly recommended!",
-          author: "Sarah Williams",
-          location: "London, UK",
-          avatar: "https://i.pravatar.cc/150?img=5",
-          rating: 5,
-        },
-        {
-          content:
-            "What an incredible experience! The team went above and beyond to ensure we had the most authentic and comfortable stay in Varanasi. The cultural insights and local connections made all the difference.",
-          author: "Priya Patel",
-          location: "Mumbai, India",
-          avatar: "https://i.pravatar.cc/150?img=9",
-          rating: 5,
-        },
-      ];
-
-      function initEnhancedTestimonials() {
-        const carousel = document.getElementById("testimonialCarousel");
-        const content = carousel.querySelector(".testimonial-content");
-        const prevBtn = document.getElementById("prevTestimonial");
-        const nextBtn = document.getElementById("nextTestimonial");
-        let currentIndex = 0;
-
-        // Create indicators
-        const indicators = document.createElement("div");
-        indicators.className = "flex items-center justify-center gap-2 mt-8";
-        testimonials.forEach((_, index) => {
-          const dot = document.createElement("button");
-          dot.className = `testimonial-indicator ${
-            index === 0 ? "active" : ""
-          }`;
-          dot.addEventListener("click", () => goToSlide(index));
-          indicators.appendChild(dot);
-        });
-        carousel.appendChild(indicators);
-
-        function updateTestimonial(index) {
-          const testimonial = testimonials[index];
-          content.innerHTML = `
+  function updateTestimonial(index) {
+    const testimonial = testimonials[index];
+    content.innerHTML = `
             <div class="testimonial-slide ${
               index === currentIndex ? "active" : ""
             }">
@@ -336,8 +327,8 @@
               </blockquote>
               <div class="flex items-center gap-4">
                 <img src="${testimonial.avatar}" alt="${
-            testimonial.author
-          }" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-100"/>
+      testimonial.author
+    }" class="w-14 h-14 rounded-full object-cover border-2 border-indigo-100"/>
                 <div>
                   <div class="font-semibold text-slate-800">${
                     testimonial.author
@@ -350,60 +341,58 @@
             </div>
           `;
 
-          // Update indicators
-          const dots = indicators.getElementsByClassName(
-            "testimonial-indicator"
-          );
-          Array.from(dots).forEach((dot, i) => {
-            dot.classList.toggle("active", i === index);
-          });
-        }
+    // Update indicators
+    const dots = indicators.getElementsByClassName("testimonial-indicator");
+    Array.from(dots).forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  }
 
-        function goToSlide(index) {
-          currentIndex = index;
-          updateTestimonial(currentIndex);
-        }
+  function goToSlide(index) {
+    currentIndex = index;
+    updateTestimonial(currentIndex);
+  }
 
-        prevBtn.addEventListener("click", () => {
-          currentIndex =
-            (currentIndex - 1 + testimonials.length) % testimonials.length;
-          updateTestimonial(currentIndex);
-        });
+  prevBtn.addEventListener("click", () => {
+    currentIndex =
+      (currentIndex - 1 + testimonials.length) % testimonials.length;
+    updateTestimonial(currentIndex);
+  });
 
-        nextBtn.addEventListener("click", () => {
-          currentIndex = (currentIndex + 1) % testimonials.length;
-          updateTestimonial(currentIndex);
-        });
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % testimonials.length;
+    updateTestimonial(currentIndex);
+  });
 
-        // Auto-advance slides
-        let autoplayInterval = setInterval(() => {
-          currentIndex = (currentIndex + 1) % testimonials.length;
-          updateTestimonial(currentIndex);
-        }, 5000);
+  // Auto-advance slides
+  let autoplayInterval = setInterval(() => {
+    currentIndex = (currentIndex + 1) % testimonials.length;
+    updateTestimonial(currentIndex);
+  }, 5000);
 
-        // Pause autoplay on hover
-        carousel.addEventListener("mouseenter", () =>
-          clearInterval(autoplayInterval)
-        );
-        carousel.addEventListener("mouseleave", () => {
-          autoplayInterval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % testimonials.length;
-            updateTestimonial(currentIndex);
-          }, 5000);
-        });
+  // Pause autoplay on hover
+  carousel.addEventListener("mouseenter", () =>
+    clearInterval(autoplayInterval)
+  );
+  carousel.addEventListener("mouseleave", () => {
+    autoplayInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % testimonials.length;
+      updateTestimonial(currentIndex);
+    }, 5000);
+  });
 
-        updateTestimonial(0);
-      }
+  updateTestimonial(0);
+}
 
-      // Initialize everything
-      document.addEventListener("DOMContentLoaded", async () => {
-        try {
-          await mountUtilities();
-          initScrollReveal();
-          initScrollAnimations();
-          initEnhancedTestimonials();
+// Initialize everything
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await mountUtilities();
+    initScrollReveal();
+    initScrollAnimations();
+    initEnhancedTestimonials();
 
-          await loadPackages();
-          await loadCars();
-        } catch (error) {}
-      });
+    await loadPackages();
+    await loadCars();
+  } catch (error) {}
+});

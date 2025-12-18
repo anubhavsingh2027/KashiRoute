@@ -1,20 +1,21 @@
 {
   "rewrites": [
     { "source": "/", "destination": "index.html" },
-    { "source": "/login", "destination": "login.html" },
-    { "source": "/signUp", "destination": "signup.html" },
-    { "source": "/about", "destination": "about.html" },
-    { "source": "/CarAdd", "destination": "adminCarSet.html" },
-    { "source": "/PackageAdd", "destination": "adminPackageSet.html" },
-    { "source": "/userHistory", "destination": "allBookingHistory.html" },
-    { "source": "/carBook", "destination": "carBook.html" },
-    { "source": "/carDetails", "destination": "carDetails.html" },
-    { "source": "/contact", "destination": "contact.html" },
-    { "source": "/forgetPassword", "destination": "forgetPassword.html" },
-    { "source": "/packageBook", "destination": "packageBook.html" },
-    { "source": "/packageDetails", "destination": "packagedetails.html" },
-    { "source": "/unauthorsisedAccess", "destination": "unauthorised403.html" },
-    { "source": "/history", "destination": "userHistory.html" },
-    { "source": "/typeChange", "destination": "userTypeAccess.html" }
+    { "source": "/home", "destination": "assets/html/home.html" },
+    { "source": "/login", "destination": "assets/html/login.html" },
+    { "source": "/signUp", "destination": "assets/html/signup.html" },
+    { "source": "/about", "destination": "assets/html/about.html" },
+    { "source": "/CarAdd", "destination": "assets/html/adminCarSet.html" },
+    { "source": "/PackageAdd", "destination": "assets/html/adminPackageSet.html" },
+    { "source": "/userHistory", "destination": "assets/html/allBookingHistory.html" },
+    { "source": "/carBook", "destination": "assets/html/carBook.html" },
+    { "source": "/carDetails", "destination": "assets/html/carDetails.html" },
+    { "source": "/contact", "destination": "assets/html/contact.html" },
+    { "source": "/forgetPassword", "destination": "assets/html/forgetPassword.html" },
+    { "source": "/packageBook", "destination": "assets/html/packageBook.html" },
+    { "source": "/packageDetails", "destination": "assets/html/packagedetails.html" },
+    { "source": "/unauthorsisedAccess", "destination": "assets/html/unauthorised403.html" },
+    { "source": "/history", "destination": "assets/html/userHistory.html" },
+    { "source": "/typeChange", "destination": "assets/html/userTypeAccess.html" }
   ]
 }

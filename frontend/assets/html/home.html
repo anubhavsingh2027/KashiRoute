@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kashi Route</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+      integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "travel-blue": "#0EA5E9",
+              "sunset-orange": "#FB923C",
+              "sacred-gold": "#F59E0B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="assets/css/index.css">
+  </head>
+
+  <body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen loading">
+
+
+    <nav
+      id="navbar"
+      class="sticky top-0 z-40 bg-gray-100 backdrop-blur-md border-b border-white/20 shadow-sm"
+    ></nav>
+    <!-- Hero Section with Enhanced Styling -->
+    <section
+      id="home"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden bg-cover bg-center"
+      style="
+        background-image: url('https://wallpapercave.com/wp/wp6759674.jpg');
+      "
+    >
+      <!-- Gradient Overlay for Better Text Visibility -->
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
+      ></div>
+
+      <!-- Background Animation Elements -->
+      <div class="absolute inset-0 overflow-hidden">
+        <div
+          class="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-float"
+        ></div>
+        <div
+          class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-r from-pink-500/20 to-orange-400/20 rounded-full blur-3xl animate-blob"
+        ></div>
+      </div>
+
+      <!-- Content -->
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 text-center text-white"
+      >
+        <div class="fade-in">
+          <h1
+            class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight drop-shadow-lg"
+          >
+            Discover the
+            <span
+              class="bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent"
+            >
+              Sacred City
+            </span>
+            <br />of Varanasi
+          </h1>
+
+          <p
+            class="text-xl md:text-2xl opacity-90 mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-md"
+          >
+            Embark on a spiritual journey through ancient temples, sacred ghats,
+            and timeless traditions. Experience the mystical charm of Varanasi
+            with our curated packages and expert guidance.
+          </p>
+
+          <!-- Enhanced Stats -->
+          <div
+            class="flex flex-wrap justify-center items-center gap-6 mb-12 text-white"
+          >
+            <div
+              class="flex items-center space-x-3 glass-effect px-6 py-3 rounded-full backdrop-blur-md bg-white/10 border border-white/20"
+            >
+              <i class="fas fa-star text-yellow-400 text-xl"></i>
+              <span class="font-semibold">From 2,000+ reviews</span>
+            </div>
+            <div
+              class="flex items-center space-x-3 glass-effect px-6 py-3 rounded-full backdrop-blur-md bg-white/10 border border-white/20"
+            >
+              <i class="fas fa-shield-alt text-blue-400 text-xl"></i>
+              <span class="font-semibold">Verified Services</span>
+            </div>
+            <div
+              class="flex items-center space-x-3 glass-effect px-6 py-3 rounded-full backdrop-blur-md bg-white/10 border border-white/20"
+            >
+              <i class="fas fa-landmark text-orange-400 text-xl"></i>
+              <span class="font-semibold">Ancient Heritage</span>
+            </div>
+            <div
+              class="flex items-center space-x-3 glass-effect px-6 py-3 rounded-full backdrop-blur-md bg-white/10 border border-white/20"
+            >
+              <i class="fas fa-clock text-purple-400 text-xl"></i>
+              <span class="font-semibold">24/7 Available</span>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <a
+              href="#special-packages"
+              class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
+            >
+              <span class="flex items-center space-x-3">
+                <i class="fas fa-play"></i>
+                <span>Explore Packages</span>
+              </span>
+            </a>
+            <a href="tel:+917355026966">
+              <button
+                class="backdrop-blur-md bg-white/10 hover:bg-white/20 border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <span class="flex items-center space-x-3">
+                  <i class="fas fa-phone"></i>
+                  <span>Call Now</span>
+                </span>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Special Travel Packages Section -->
+    <section id="special-packages" class="py-20 bg-white relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2
+            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6"
+          >
+            Special Travel Packages
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Discover our handpicked selection of spiritual journeys and cultural
+            experiences in the holy city of Varanasi.
+          </p>
+        </div>
+
+        <!-- Keep your original dynamic container exactly as it is -->
+        <div
+          id="packageContainer"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <!-- Dynamic packages load here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Enhanced Testimonials Section -->
+    <section
+      class="py-24 bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 relative overflow-hidden"
+    >
+      <!-- Decorative Background Elements -->
+      <div class="absolute inset-0">
+        <div
+          class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"
+        ></div>
+        <div
+          class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-200/20 to-sky-200/20 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"
+        ></div>
+        <div class="absolute inset-0 bg-grid opacity-10"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Enhanced Section Header -->
+        <div class="text-center mb-20 fade-in">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 shadow-sm mb-6"
+          >
+            <i class="fas fa-quote-left text-indigo-500"></i>
+            <span class="text-slate-800 font-medium">Traveler Stories</span>
+            <i class="fas fa-quote-right text-indigo-500"></i>
+          </div>
+          <h2
+            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6"
+          >
+            What Our Travelers Say
+          </h2>
+          <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            Discover the authentic experiences shared by our valued guests who
+            have explored the spiritual essence of Varanasi with us
+          </p>
+        </div>
+
+        <!-- Enhanced Testimonial Carousel -->
+        <div class="relative">
+          <!-- Previous Button -->
+          <button
+            id="prevTestimonial"
+            class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg z-10 hover:bg-white transition-all duration-300 group"
+          >
+            <i
+              class="fas fa-arrow-left text-slate-600 group-hover:text-indigo-600 transition-colors"
+            ></i>
+          </button>
+
+          <!-- Testimonial Container -->
+          <div
+            id="testimonialCarousel"
+            class="relative w-full max-w-4xl mx-auto"
+          >
+            <div
+              class="relative bg-white/80 backdrop-blur-lg rounded-2xl p-8 md:p-12 shadow-xl border border-slate-100"
+            >
+              <!-- Quote Icon -->
+              <div
+                class="absolute top-0 right-0 transform translate-x-4 -translate-y-4 w-20 h-20"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl transform rotate-6 opacity-20"
+                ></div>
+                <div
+                  class="absolute inset-0 bg-white rounded-2xl flex items-center justify-center"
+                >
+                  <i class="fas fa-quote-right text-3xl text-indigo-600/40"></i>
+                </div>
+              </div>
+
+              <!-- Dynamic Content -->
+              <div class="testimonial-content space-y-6">
+                <!-- Content will be dynamically inserted here -->
+              </div>
+
+              <!-- Rating Stars -->
+              <div class="flex items-center gap-1 mb-8">
+                <i class="fas fa-star text-yellow-400"></i>
+                <i class="fas fa-star text-yellow-400"></i>
+                <i class="fas fa-star text-yellow-400"></i>
+                <i class="fas fa-star text-yellow-400"></i>
+                <i class="fas fa-star text-yellow-400"></i>
+              </div>
+
+              <!-- Indicators -->
+              <div class="flex items-center justify-center gap-2 mt-8">
+                <!-- Will be dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Button -->
+          <button
+            id="nextTestimonial"
+            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm border border-slate-200 shadow-lg z-10 hover:bg-white transition-all duration-300 group"
+          >
+            <i
+              class="fas fa-arrow-right text-slate-600 group-hover:text-indigo-600 transition-colors"
+            ></i>
+          </button>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-4xl mx-auto"
+        >
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-slate-100 hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="text-3xl font-bold text-indigo-600 mb-2">500+</div>
+            <div class="text-slate-600">Happy Travelers</div>
+          </div>
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-slate-100 hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="text-3xl font-bold text-sky-600 mb-2">4.9/5</div>
+            <div class="text-slate-600">Average Rating</div>
+          </div>
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-slate-100 hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="text-3xl font-bold text-purple-600 mb-2">98%</div>
+            <div class="text-slate-600">Satisfaction Rate</div>
+          </div>
+          <div
+            class="bg-white/80 backdrop-blur-sm rounded-xl p-6 text-center shadow-lg border border-slate-100 hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div class="text-3xl font-bold text-emerald-600 mb-2">3+ Yrs</div>
+            <div class="text-slate-600">Experience</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2
+            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6"
+          >
+            Explore the Sacred City
+          </h2>
+          <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+            From the mesmerizing Ganga aarti to historic forts and sacred
+            temples, our packages are thoughtfully crafted to showcase the
+            city's spiritual and cultural richness with comfort and local
+            expertise.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-8 fade-in">
+            <!-- Service 1 -->
+            <div class="enhanced-card rounded-2xl p-6">
+              <div class="flex items-start space-x-6">
+                <div
+                  class="flex-shrink-0 w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center"
+                >
+                  <i class="fas fa-om text-white text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-800 mb-3">
+                    Shree Kashi Vishwanath
+                  </h3>
+                  <p class="text-gray-600">
+                    A sacred temple dedicated to Lord Shiva located in the heart
+                    of Varanasi. Experience divine blessings in this ancient
+                    sanctuary.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="enhanced-card rounded-2xl p-6">
+              <div class="flex items-start space-x-6">
+                <div
+                  class="flex-shrink-0 w-16 h-16 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl flex items-center justify-center"
+                >
+                  <i class="fas fa-water text-white text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-800 mb-3">
+                    Ganga Aarti
+                  </h3>
+                  <p class="text-gray-600">
+                    Experience the mesmerizing evening ritual at the ghats — a
+                    spiritual spectacle that illuminates the soul.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="enhanced-card rounded-2xl p-6">
+              <div class="flex items-start space-x-6">
+                <div
+                  class="flex-shrink-0 w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-600 rounded-2xl flex items-center justify-center"
+                >
+                  <i class="fas fa-landmark text-white text-2xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-bold text-gray-800 mb-3">
+                    Ancient Temples
+                  </h3>
+                  <p class="text-gray-600">
+                    Discover the architectural marvels and spiritual
+                    significance of centuries-old temples throughout the city.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Section -->
+          <div class="relative fade-in">
+            <div class="relative overflow-hidden rounded-3xl shadow-2xl">
+              <img
+                src="https://images.hindustantimes.com/img/2021/12/20/1600x900/6cd32fe4-61a2-11ec-8bb7-69f77148494e_1640011166463.jpg"
+                alt="Sacred Varanasi"
+                class="w-full h-96 object-cover hover-scale"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Car Rental Section -->
+    <section
+      id="car-rental"
+      class="py-20 bg-gradient-to-br from-gray-50 to-blue-50 relative"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 fade-in">
+          <h2
+            class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6"
+          >
+            Car Rental Services
+          </h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Experience comfort and reliability with our premium fleet of
+            vehicles. Perfect for city tours, airport transfers, and pilgrimage
+            visits.
+          </p>
+        </div>
+
+        <!-- Keep your original car container exactly as it is -->
+        <div
+          id="carContainer"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <!-- Dynamic cars load here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="fade-in">
+            <div class="flex items-center space-x-3 mb-6">
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center"
+              >
+                <i class="fas fa-om text-white text-xl"></i>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold">Kashi Route</h3>
+                <p class="text-gray-400 text-sm">Sacred Journeys</p>
+              </div>
+            </div>
+            <p class="text-gray-300 mb-6">
+              Discover the spiritual essence of Varanasi with our expertly
+              crafted travel experiences.
+            </p>
+          </div>
+
+          <div class="fade-in">
+            <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+            <div class="space-y-3">
+              <a
+                href="#home"
+                class="block text-gray-300 hover:text-white transition-colors"
+                >Home</a
+              >
+              <a
+                href="#special-packages"
+                class="block text-gray-300 hover:text-white transition-colors"
+                >Packages</a
+              >
+              <a
+                href="#about"
+                class="block text-gray-300 hover:text-white transition-colors"
+                >About</a
+              >
+              <a
+                href="#car-rental"
+                class="block text-gray-300 hover:text-white transition-colors"
+                >Cars</a
+              >
+            </div>
+          </div>
+
+          <div class="fade-in">
+            <h4 class="text-lg font-bold mb-6">Services</h4>
+            <div class="space-y-3">
+              <p class="text-gray-300">Spiritual Tours</p>
+              <p class="text-gray-300">Heritage Walks</p>
+              <p class="text-gray-300">Boat Tours</p>
+              <p class="text-gray-300">Car Rentals</p>
+            </div>
+          </div>
+
+          <div class="fade-in">
+            <h4 class="text-lg font-bold mb-6">Contact</h4>
+            <div class="space-y-4">
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-map-marker-alt text-blue-400"></i>
+                <span class="text-gray-300">Varanasi, India</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-phone text-blue-400"></i>
+                <span class="text-gray-300">+91 98765 43210</span>
+              </div>
+              <div class="flex items-center space-x-3">
+                <i class="fas fa-envelope text-blue-400"></i>
+                <span class="text-gray-300">info@kashikatravel.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 mt-12 pt-8 text-center fade-in">
+          <p class="text-gray-400">© 2024 Kashi Route. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Keep ALL Your Original Scripts EXACTLY As They Are -->
+   <script type="module" src="../js/Middleware/DynamicNav.js"></script><script type="module" src="../js/scripts/indexscript.js"></script>
+  </body>
+</html>

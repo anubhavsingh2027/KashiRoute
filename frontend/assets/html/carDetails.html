@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Package Details |Kashi Route</title>
+    <title>Car Details | Kashi Route </title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
@@ -21,6 +21,24 @@
           transform: translateX(100%);
         }
       }
+      @keyframes carSlide {
+        0%,
+        100% {
+          transform: translateX(0px);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+      }
+
+      @keyframes wheelSpin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
 
       @keyframes fadeInUp {
         0% {
@@ -32,6 +50,7 @@
           opacity: 1;
         }
       }
+
       @keyframes sparkle {
         0%,
         100% {
@@ -58,7 +77,7 @@
 
       /* Light Clean Background */
       body {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
         min-height: 100vh;
         position: relative;
       }
@@ -72,17 +91,17 @@
         height: 100%;
         background: radial-gradient(
             circle at 20% 20%,
-            rgba(120, 119, 198, 0.1) 0%,
+            rgba(34, 197, 94, 0.08) 0%,
             transparent 50%
           ),
           radial-gradient(
             circle at 80% 80%,
-            rgba(255, 119, 198, 0.1) 0%,
+            rgba(59, 130, 246, 0.08) 0%,
             transparent 50%
           ),
           radial-gradient(
             circle at 40% 40%,
-            rgba(120, 219, 255, 0.1) 0%,
+            rgba(168, 85, 247, 0.06) 0%,
             transparent 50%
           );
         pointer-events: none;
@@ -94,65 +113,45 @@
         z-index: 2;
       }
 
-      /* Fabulous Header */
+      /* Fabulous Car Header */
       .header-title {
-        background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+        background: linear-gradient(45deg, #10b981, #059669, #0891b2);
         background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: gradientMove 4s ease infinite;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .car-icon {
+        color: #10b981;
+        animation: carSlide 3s ease-in-out infinite;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+
+      .wheel-icon {
+        color: #6b7280;
+        animation: wheelSpin 2s linear infinite;
+        margin-left: 1rem;
       }
 
       .header-title::after {
-        content: "✨";
+        content: "🚀";
         position: absolute;
-        right: -40px;
+        right: -50px;
         top: -5px;
         animation: sparkle 2s ease-in-out infinite;
       }
 
-      /* Fabulous Add Button */
-      .add-btn {
-        background: linear-gradient(45deg, #667eea, #764ba2);
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .add-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.4),
-          transparent
-        );
-        transition: left 0.5s;
-      }
-
-      .add-btn:hover::before {
-        left: 100%;
-      }
-
-      .add-btn:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
-      }
-
-      /* ✨ FABULOUS CARDS - HOVER FIXED ✨ */
+      /* ✨ FABULOUS CAR CARDS - HOVER FIXED ✨ */
       .card {
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(20px);
-        border-radius: 20px;
+        border-radius: 24px;
         border: 1px solid rgba(255, 255, 255, 0.8);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -188,7 +187,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        background: linear-gradient(90deg, #10b981, #059669, #0891b2);
         background-size: 200% 100%;
         animation: gradientMove 3s ease infinite;
       }
@@ -201,10 +200,11 @@
 
       .card img {
         width: 100%;
-        height: 220px;
+        height: 240px;
         object-fit: cover;
         transition: all 0.4s ease;
         filter: brightness(1.05) contrast(1.05);
+        background: linear-gradient(45deg, #f0f9ff, #e0f2fe);
       }
 
       .card:hover img {
@@ -225,61 +225,78 @@
       .card-content h3 {
         font-size: 1.5rem;
         font-weight: bold;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(45deg, #2563eb, #7c3aed);
+        margin-bottom: 0.75rem;
+        background: linear-gradient(45deg, #10b981, #059669);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-content h3::before {
+        content: "🚗";
+        font-size: 1.2rem;
+        animation: carSlide 4s ease-in-out infinite;
       }
 
       .card-content h3::after {
         content: "";
         position: absolute;
-        bottom: -5px;
+        bottom: -8px;
         left: 0;
-        width: 50px;
-        height: 2px;
-        background: linear-gradient(90deg, #667eea, #764ba2);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #10b981, #059669);
         border-radius: 2px;
       }
 
-      .place {
-        background: linear-gradient(45deg, #10b981, #059669);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+      .wheel-indicator {
+        width: 18px;
+        height: 18px;
+        background: #6b7280;
+        border-radius: 50%;
+        animation: wheelSpin 2s linear infinite;
+        margin-left: auto;
       }
 
-      .place::before {
-        content: "📍";
-        font-size: 1rem;
+      /* Car Stats */
+      .car-stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0;
+        padding: 0.75rem;
+        background: rgba(16, 185, 129, 0.08);
+        border-radius: 15px;
+        border-left: 4px solid #10b981;
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.1);
+      }
+
+      .stat-item {
+        text-align: center;
+        font-size: 0.875rem;
+        color: #6b7280;
+        transition: all 0.3s ease;
+      }
+
+      .stat-item:hover {
+        transform: scale(1.1);
+        color: #10b981;
+      }
+
+      .stat-icon {
+        color: #10b981;
+        margin-bottom: 0.25rem;
+        font-size: 1.2rem;
         animation: sparkle 3s ease-in-out infinite;
       }
 
-      .duration {
-        background: linear-gradient(45deg, #8b5cf6, #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .duration::before {
-        content: "⏰";
-        font-size: 0.9rem;
-        animation: sparkle 4s ease-in-out infinite;
+      .stat-value {
+        font-weight: bold;
+        color: #10b981;
+        font-size: 1.1rem;
       }
 
       .card-content p {
@@ -297,15 +314,23 @@
         background-clip: text;
         margin-bottom: 1rem;
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
       .price::before {
-        content: "💎";
-        position: absolute;
-        left: -30px;
-        top: 0;
-        font-size: 1.2rem;
+        content: "💰";
+        font-size: 1.3rem;
         animation: sparkle 2s ease-in-out infinite;
+      }
+
+      .price::after {
+        content: "/day";
+        font-size: 0.9rem;
+        color: #6b7280;
+        font-weight: normal;
+        margin-left: 0.5rem;
       }
 
       /* Fabulous Action Buttons */
@@ -360,6 +385,22 @@
         box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
       }
 
+      /* Eco Badge */
+      .eco-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(45deg, #22c55e, #16a34a);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+        animation: sparkle 4s ease-in-out infinite;
+        z-index: 3;
+      }
+
       /* Loading Shimmer */
       .loading-shimmer {
         background: linear-gradient(
@@ -370,31 +411,37 @@
         );
         background-size: 200% 100%;
         animation: shimmer 2s infinite;
-        border-radius: 20px;
-        height: 400px;
+        border-radius: 24px;
+        height: 420px;
         border: 1px solid rgba(255, 255, 255, 0.5);
       }
     </style>
   </head>
   <body>
     <nav id="navbar" class="sticky top-0 z-40"></nav>
-
     <main class="max-w-7xl mx-auto px-4 py-10">
-      <header class="flex items-center justify-between mb-12">
-        <h1 class="text-4xl font-extrabold header-title">
-          🧳 Available Packages
+      <header
+        class="flex flex-wrap items-center justify-between mb-12 px-6 py-4 rounded-2xl shadow-md border border-gray-200"
+      >
+        <h1
+          class="text-4xl font-extrabold flex items-center gap-3 text-gray-900"
+        >
+          <i class="fa-solid fa-car" style="color: #63e6be"></i>
+          <span>Available Cars</span>
         </h1>
+
         <a
-          href="/packageBook"
-          class="add-btn inline-flex items-center gap-2 px-4 py-3 text-white rounded-full shadow hover:scale-105 transition font-semibold"
+          href="/carBook"
+          class="inline-flex items-center gap-2 px-5 py-3 text-white rounded-full shadow-md transition duration-200 font-semibold"
+          style="background-color: #63e6be"
         >
           <i class="fas fa-plus"></i>
-          Book Packages
+          <span>Book Cars</span>
         </a>
       </header>
 
       <div
-        id="packageContainer"
+        id="carContainer"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
       >
         <!-- Fabulous Loading Animation -->
@@ -404,56 +451,7 @@
       </div>
     </main>
 
-    <script type="module" src="./assets/js/DynamicNav.js"></script>
-
-    <script type="module">
-      import { getAllPackages, getUserSession } from "./assets/js/services.js";
-
-      async function loadPackages() {
-        const userSession = await getUserSession();
-        const userType = userSession?.user?.userType || "guest";
-
-        const data = await getAllPackages();
-        const container = document.getElementById("packageContainer");
-
-        if (data.error) {
-          container.textContent = "Failed to load packages.";
-          return;
-        }
-
-        if (data.length === 0) {
-          container.textContent = "No packages available.";
-          return;
-        }
-
-        container.innerHTML = data
-          .map(
-            (pkg) => `
-      <div class="card">
-        <img src="${pkg.url}" alt="${pkg.packageName}">
-        <div class="card-content">
-          <h3>${pkg.packageName}</h3>
-          <p class="place">${pkg.place}</p>
-          <p class="duration"> <i class="fa-solid fa-clock" style="color: #e6de05;"></i> Package Duration  ${
-            pkg.packageDuration
-          }</p>
-          <p>${pkg.description}</p>
-          <p class="price">₹${pkg.price}</p>
-          ${
-            userType === "host"
-              ? `<a href="/packageBook?id=${pkg._id}&delete=true" class="action-btn delete-btn"><i class="fas fa-trash"></i> Delete</a>`
-              : `<a href="/packageBook?id=${pkg._id}" class="action-btn"><i class="fas fa-calendar-check"></i> Book</a>`
-          }
-        </div>
-      </div>
-    `
-          )
-          .join("");
-      }
-
-      loadPackages();
-    </script>
-
-    <script type="module" src="./assets/js/tailwind-init.js"></script>
+    <script type="module" src="./assets/js/DynamicNav.js"></script><script type="module" src=""></script>
+    <!-- <script type="module" src="./assets/js/tailwind-init.js"></script> -->
   </body>
 </html>

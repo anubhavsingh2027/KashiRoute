@@ -73,7 +73,7 @@ async function sendOtp(email, otp) {
 // Handle Get Code button click
 document.getElementById("getCodeBtn").addEventListener("click", async () => {
   const email = document.getElementById("email").value;
-  const msg = document.getElementById("register-message") || null;
+ 
   globalemail = email;
   if (!email) {
     showToast("Enter Email", "error");

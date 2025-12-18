@@ -4,30 +4,30 @@ const navbar = document.getElementById("navbar");
 
 function buildLinkHtml(link, isActive) {
   const iconMap = {
-    'Home': 'fa-home',
-    'About': 'fa-info-circle',
-    'Packages': 'fa-box-open',
-    'Cars': 'fa-car',
-    'Contact': 'fa-envelope',
-    'Sign In': 'fa-sign-in-alt',
-    'Sign Out': 'fa-sign-out-alt',
-    'Book Package': 'fa-shopping-cart',
-    'Book Car': 'fa-car-side',
-    'History': 'fa-history',
-    'Admin Cars': 'fa-car-alt',
-    'Admin Packages': 'fa-boxes',
-    'Bookings': 'fa-calendar-check',
-    'Users': 'fa-users'
+    Home: "fa-home",
+    About: "fa-info-circle",
+    Packages: "fa-box-open",
+    Cars: "fa-car",
+    Contact: "fa-envelope",
+    "Sign In": "fa-sign-in-alt",
+    "Sign Out": "fa-sign-out-alt",
+    "Book Package": "fa-shopping-cart",
+    "Book Car": "fa-car-side",
+    History: "fa-history",
+    "Admin Cars": "fa-car-alt",
+    "Admin Packages": "fa-boxes",
+    Bookings: "fa-calendar-check",
+    Users: "fa-users",
   };
 
-  const icon = iconMap[link.name] || 'fa-link';
+  const icon = iconMap[link.name] || "fa-link";
 
   return `
     <a href="${link.href}"
        class="nav-link group relative px-2 py-1.5 rounded-lg text-[12px] font-medium tracking-wide transition-all duration-500 overflow-hidden transform hover:scale-105 ${
          isActive
-           ? 'active-gradient text-black shadow-lg ring-1 ring-white/30'
-           : 'bg-white/90 text-gray-700 hover:bg-white/95 hover:shadow-md backdrop-blur-xl'
+           ? "active-gradient text-black shadow-lg ring-1 ring-white/30"
+           : "bg-white/90 text-gray-700 hover:bg-white/95 hover:shadow-md backdrop-blur-xl"
        }"
     >
       <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-all duration-700 blur-xl"></div>
@@ -39,7 +39,9 @@ function buildLinkHtml(link, isActive) {
         <div class="relative">
           <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/40 via-blue-500/40 to-purple-600/40 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-150"></div>
           <div class="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-purple-500/30 rounded-full blur-sm opacity-0 group-hover:opacity-100 animate-ping"></div>
-          <i class="fas ${icon} ${isActive ? 'animate-pulse-glow' : 'group-hover:animate-float-nav'} text-xs relative z-10 transform group-hover:scale-110 transition-all duration-300 text-gradient"></i>
+          <i class="fas ${icon} ${
+    isActive ? "animate-pulse-glow" : "group-hover:animate-float-nav"
+  } text-xs relative z-10 transform group-hover:scale-110 transition-all duration-300 text-gradient"></i>
         </div>
 
         <span class="relative font-bold overflow-hidden">
@@ -57,10 +59,14 @@ function buildLinkHtml(link, isActive) {
         <div class="particle particle-3"></div>
       </div>
 
-      ${isActive ? `
+      ${
+        isActive
+          ? `
         <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient-x"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-blue-500/10 to-purple-600/10 animate-pulse-slow"></div>
-      ` : ''}
+      `
+          : ""
+      }
     </a>
   `;
 }
@@ -107,9 +113,9 @@ async function loadNavbar() {
       ];
     }
 
-    const current = window.location.pathname.split('/').pop() || '/';
+    const current = window.location.pathname.split("/").pop() || "/";
 
-        // Build navbar markup
+    // Build navbar markup
     const navContent = `
     <div class="max-w-full mx-auto px-2 sm:px-4 lg:px-6">
       <div class="flex items-center justify-between h-16">
@@ -124,7 +130,11 @@ async function loadNavbar() {
 
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center justify-end flex-1 overflow-x-auto space-x-0.5 px-2">
-          ${links.map((link, index) => buildLinkHtml(link, link.href.split('/').pop() === current)).join('')}
+          ${links
+            .map((link, index) =>
+              buildLinkHtml(link, link.href.split("/").pop() === current)
+            )
+            .join("")}
         </div>
 
         <!-- Mobile menu button -->
@@ -139,7 +149,11 @@ async function loadNavbar() {
     <!-- Mobile menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        ${links.map((link, index) => buildLinkHtml(link, link.href.split('/').pop() === current)).join('')}
+        ${links
+          .map((link, index) =>
+            buildLinkHtml(link, link.href.split("/").pop() === current)
+          )
+          .join("")}
       </div>
     </div>
     `;
@@ -224,7 +238,9 @@ async function loadNavbar() {
               <div class="absolute inset-0 bg-white/20 blur-sm"></div>
 
               <div class="relative flex items-center gap-2">
-                ${links.map(l => buildLinkHtml(l, l.href.endsWith(current))).join('')}
+                ${links
+                  .map((l) => buildLinkHtml(l, l.href.endsWith(current)))
+                  .join("")}
               </div>
 
               <!-- Floating highlight -->
@@ -260,27 +276,33 @@ async function loadNavbar() {
       <!-- CORRECTED MOBILE MENU -->
       <div id="mobile-menu" class="mobile-menu-container md:hidden">
         <div class="px-4 py-3 space-y-2 bg-gradient-to-b from-white/98 via-gray-50/98 to-white/98 backdrop-blur-xl border-t border-white/50 shadow-xl">
-          ${links.map((l, i) => {
-            const icon = {
-              'Home': 'fa-home',
-              'About': 'fa-info-circle',
-              'Packages': 'fa-box-open',
-              'Cars': 'fa-car',
-              'Contact': 'fa-envelope',
-              'Sign In': 'fa-sign-in-alt',
-              'Sign Out': 'fa-sign-out-alt',
-              'Book Package': 'fa-shopping-cart',
-              'Book Car': 'fa-car-side',
-              'History': 'fa-history',
-              'Admin Cars': 'fa-car-alt',
-              'Admin Packages': 'fa-boxes',
-              'Bookings': 'fa-calendar-check',
-              'Users': 'fa-users'
-            }[l.name] || 'fa-link';
+          ${links
+            .map((l, i) => {
+              const icon =
+                {
+                  Home: "fa-home",
+                  About: "fa-info-circle",
+                  Packages: "fa-box-open",
+                  Cars: "fa-car",
+                  Contact: "fa-envelope",
+                  "Sign In": "fa-sign-in-alt",
+                  "Sign Out": "fa-sign-out-alt",
+                  "Book Package": "fa-shopping-cart",
+                  "Book Car": "fa-car-side",
+                  History: "fa-history",
+                  "Admin Cars": "fa-car-alt",
+                  "Admin Packages": "fa-boxes",
+                  Bookings: "fa-calendar-check",
+                  Users: "fa-users",
+                }[l.name] || "fa-link";
 
-            return `
+              return `
               <a href="${l.href}"
-                class="mobile-nav-item group flex items-center gap-3 p-3 rounded-xl text-sm font-semibold text-black ${l.href.endsWith(current) ? 'bg-gradient-to-r from-cyan-50 to-purple-50 border-2 border-cyan-200/50' : 'bg-white/80 hover:bg-white'} transition-all duration-300 border hover:border-cyan-200/30 hover:shadow-lg backdrop-blur-sm transform hover:scale-105"
+                class="mobile-nav-item group flex items-center gap-3 p-3 rounded-xl text-sm font-semibold text-black ${
+                  l.href.endsWith(current)
+                    ? "bg-gradient-to-r from-cyan-50 to-purple-50 border-2 border-cyan-200/50"
+                    : "bg-white/80 hover:bg-white"
+                } transition-all duration-300 border hover:border-cyan-200/30 hover:shadow-lg backdrop-blur-sm transform hover:scale-105"
                 style="animation-delay: ${i * 0.1}s;">
 
                 <!-- Icon container -->
@@ -299,7 +321,8 @@ async function loadNavbar() {
                 </div>
               </a>
             `;
-          }).join('')}
+            })
+            .join("")}
         </div>
       </div>
 
@@ -648,62 +671,61 @@ async function loadNavbar() {
     `;
 
     // SIMPLIFIED mobile toggle with proper visibility control
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menuIcon');
+    const mobileBtn = document.getElementById("mobileMenuBtn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menuIcon");
 
     if (mobileBtn && mobileMenu) {
       let isOpen = false;
 
-      mobileBtn.addEventListener('click', (e) => {
+      mobileBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         isOpen = !isOpen;
 
-
         // Simple hamburger to X animation
         if (isOpen) {
-          menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
-          mobileMenu.classList.add('show');
-          mobileMenu.style.display = 'block';
+          menuIcon.setAttribute("d", "M6 18L18 6M6 6l12 12");
+          mobileMenu.classList.add("show");
+          mobileMenu.style.display = "block";
         } else {
-          menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-          mobileMenu.classList.remove('show');
+          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+          mobileMenu.classList.remove("show");
           setTimeout(() => {
-            if (!mobileMenu.classList.contains('show')) {
-              mobileMenu.style.display = 'none';
+            if (!mobileMenu.classList.contains("show")) {
+              mobileMenu.style.display = "none";
             }
           }, 300);
         }
       });
 
       // Close menu on window resize if open
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         if (window.innerWidth >= 768 && isOpen) {
           isOpen = false;
-          menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-          mobileMenu.classList.remove('show');
-          mobileMenu.style.display = 'none';
+          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+          mobileMenu.classList.remove("show");
+          mobileMenu.style.display = "none";
         }
       });
 
       // Close menu when clicking a link
-      const mobileNavItems = mobileMenu.querySelectorAll('.mobile-nav-item');
-      mobileNavItems.forEach(item => {
-        item.addEventListener('click', () => {
+      const mobileNavItems = mobileMenu.querySelectorAll(".mobile-nav-item");
+      mobileNavItems.forEach((item) => {
+        item.addEventListener("click", () => {
           isOpen = false;
-          menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-          mobileMenu.classList.remove('show');
+          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+          mobileMenu.classList.remove("show");
           setTimeout(() => {
-            mobileMenu.style.display = 'none';
+            mobileMenu.style.display = "none";
           }, 300);
         });
       });
     }
-
   } catch (err) {
-    navbar.innerHTML = '<div class="p-4 bg-slate-800 text-white"><a href="/">Home</a></div>';
+    navbar.innerHTML =
+      '<div class="p-4 bg-slate-800 text-white"><a href="/">Home</a></div>';
   }
 }
 loadNavbar();

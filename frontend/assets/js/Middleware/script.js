@@ -236,39 +236,8 @@
   }
 
   function revealHomepage() {
-    // Remove loading class to show content
-    document.body.classList.remove("loading");
-
-    // Small delay to ensure content is visible before animations
-    setTimeout(() => {
-      // Reveal hero section
-      const title = document.querySelector(".hero-title");
-      const sub = document.querySelector(".hero-sub");
-      const exploreBtn = document.querySelector('[href="#special-packages"]');
-      const bookBtn = document.querySelector('a[href^="tel:"] button');
-
-      // Add reveal classes with delays
-      if (title) {
-        title.classList.add("reveal");
-      }
-      if (sub) {
-        setTimeout(() => sub.classList.add("reveal"), 200);
-      }
-
-      // Buttons with reveal animations
-      if (exploreBtn) {
-        setTimeout(() => {
-          exploreBtn.classList.add("reveal");
-          exploreBtn.classList.add("btn-explore");
-        }, 600);
-      }
-      if (bookBtn) {
-        setTimeout(() => {
-          bookBtn.classList.add("reveal");
-          bookBtn.classList.add("btn-book");
-        }, 800);
-      }
-    }, 100); // Small delay for smooth transition
+    // Redirect to /home after loading sequence completes
+    window.location.href = "/home";
   }
 
   // Start when DOM ready
