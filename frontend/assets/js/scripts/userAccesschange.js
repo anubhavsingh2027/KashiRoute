@@ -1,6 +1,8 @@
 
       import { getUsers, userTypeChanged } from "../Middleware/services.js";
 
+      let allUsers = []; // Store all users for filtering
+
       // === Extract query params from URL ===
       function getQueryParams() {
         const params = new URLSearchParams(window.location.search);
@@ -9,6 +11,57 @@
           needChange: params.get("needChange") === "true",
           type: params.get("type"),
         };
+      }
+
+      // === Filter and render users ===
+      function renderUsers(usersToRender) {
+        const container = document.getElementById("userList");
+        container.innerHTML = "";
+
+        usersToRender.forEach((user) => {
+          const card = document.createElement("div");
+          card.className = "user-card";
+
+          card.innerHTML = `
+          <div class="user-info">
+            <h2>${user.userName}</h2>
+            <p>${user.email}</p>
+          </div>
+          <div>
+            <a href="/typeChange?id=${user._id}&type=${
+            user.userType === "guest" ? "host" : "guest"
+          }&needChange=true"
+               class="action-btn host-btn">
+              ${user.userType === "guest" ? "Switch to Host" : "Switch to User"}
+            </a>
+          </div>
+        `;
+
+          container.appendChild(card);
+        });
+
+        if (usersToRender.length === 0) {
+          container.innerHTML = '<p class="text-center text-gray-500">No users found</p>';
+        }
+      }
+
+      // === Handle email search ===
+      function setupSearchFilter() {
+        const searchInput = document.getElementById("emailSearch");
+        if (searchInput) {
+          searchInput.addEventListener("input", (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === "") {
+              renderUsers(allUsers);
+            } else {
+              const filtered = allUsers.filter((user) =>
+                user.email.toLowerCase().includes(searchTerm)
+              );
+              renderUsers(filtered);
+            }
+          });
+        }
       }
 
       // === Main initialization ===
@@ -31,31 +84,9 @@
           }
 
           // ✅ Otherwise, show user list
-          const users = await getUsers();
-          const container = document.getElementById("userList");
-          container.innerHTML = "";
-
-          users.forEach((user) => {
-            const card = document.createElement("div");
-            card.className = "user-card";
-
-            card.innerHTML = `
-          <div class="user-info">
-            <h2>${user.userName}</h2>
-            <p>${user.email}</p>
-          </div>
-          <div>
-            <a href="/typeChange?id=${user._id}&type=${
-              user.userType === "guest" ? "host" : "guest"
-            }&needChange=true"
-               class="action-btn host-btn">
-              ${user.userType === "guest" ? "Switch to Host" : "Switch to User"}
-            </a>
-          </div>
-        `;
-
-            container.appendChild(card);
-          });
+          allUsers = await getUsers();
+          renderUsers(allUsers);
+          setupSearchFilter();
         } catch (err) {}
       }
 
