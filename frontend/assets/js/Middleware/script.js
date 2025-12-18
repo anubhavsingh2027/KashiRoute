@@ -242,6 +242,17 @@
 
   // Start when DOM ready
   document.addEventListener("DOMContentLoaded", () => {
+    // Check if already loaded (to prevent infinite loop from /home redirect)
+    if (sessionStorage.getItem("kashiRouteLoaded")) {
+      // Remove overlay immediately and show page
+      const overlay = document.getElementById("kr-overlay");
+      if (overlay) overlay.remove();
+      document.body.style.overflow = "";
+      return;
+    }
+
+    // Mark as loaded in this session
+    sessionStorage.setItem("kashiRouteLoaded", "true");
     startSequence();
 
     // Respect reduced motion preference
