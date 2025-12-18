@@ -237,7 +237,7 @@
 
   function revealHomepage() {
     // Redirect to /home after loading sequence completes
-    window.location.href = "/home";
+    window.location.href = "/";
   }
 
   // Start when DOM ready

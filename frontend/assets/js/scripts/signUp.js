@@ -82,7 +82,7 @@ form.addEventListener("submit", async (e) => {
         setTimeout(() => {
           overlay.style.opacity = "1";
           setTimeout(() => {
-            window.location.href = "/home";
+            window.location.href = "/";
           }, 500);
         }, 100);
       }, 1500);

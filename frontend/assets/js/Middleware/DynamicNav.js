@@ -81,7 +81,7 @@ async function loadNavbar() {
 
     if (!LoggedIn) {
       links = [
-        { name: "Home", href: "/home" },
+        { name: "Home", href: "/" },
         { name: "About", href: "/about" },
         { name: "Packages", href: "/packageDetails" },
         { name: "Cars", href: "/carDetails" },
@@ -90,7 +90,7 @@ async function loadNavbar() {
       ];
     } else if (LoggedIn && userType === "guest") {
       links = [
-        { name: "Home", href: "/home" },
+        { name: "Home", href: "/" },
         { name: "About", href: "/about" },
         { name: "Packages", href: "/packageDetails" },
         { name: "Cars", href: "/carDetails" },
@@ -102,7 +102,7 @@ async function loadNavbar() {
       ];
     } else if (LoggedIn && userType === "host") {
       links = [
-        { name: "Home", href: "/home" },
+        { name: "Home", href: "/" },
         { name: "Packages", href: "/packageDetails" },
         { name: "Cars", href: "/carDetails" },
         { name: "Admin Cars", href: "/CarAdd" },
@@ -113,7 +113,7 @@ async function loadNavbar() {
       ];
     }
 
-    const current = window.location.pathname.split("/home").pop() || "/home";
+    const current = window.location.pathname.split("/").pop() || "/";
 
     // Build navbar markup
     const navContent = `
@@ -132,7 +132,7 @@ async function loadNavbar() {
         <div class="hidden md:flex items-center justify-end flex-1 overflow-x-auto space-x-0.5 px-2">
           ${links
             .map((link, index) =>
-              buildLinkHtml(link, link.href.split("/home").pop() === current)
+              buildLinkHtml(link, link.href.split("/").pop() === current)
             )
             .join("")}
         </div>
@@ -151,7 +151,7 @@ async function loadNavbar() {
       <div class="px-2 pt-2 pb-3 space-y-1">
         ${links
           .map((link, index) =>
-            buildLinkHtml(link, link.href.split("/home").pop() === current)
+            buildLinkHtml(link, link.href.split("/").pop() === current)
           )
           .join("")}
       </div>
@@ -187,7 +187,7 @@ async function loadNavbar() {
         <div class="relative flex items-center justify-between h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Ultra-enhanced Logo -->
           <div class="flex-shrink-0">
-            <a href="/home" class="logo-container group flex items-center gap-4 hover:opacity-95 transition-all duration-500">
+            <a href="/" class="logo-container group flex items-center gap-4 hover:opacity-95 transition-all duration-500">
               <div class="relative">
                 <!-- Multiple glow layers -->
                 <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/40 via-blue-500/40 to-purple-600/40 rounded-full blur-2xl transform group-hover:scale-150 transition-all duration-700 animate-pulse-glow"></div>
@@ -725,7 +725,7 @@ async function loadNavbar() {
     }
   } catch (err) {
     navbar.innerHTML =
-      '<div class="p-4 bg-slate-800 text-white"><a href="/home">Home</a></div>';
+      '<div class="p-4 bg-slate-800 text-white"><a href="/">Home</a></div>';
   }
 }
 loadNavbar();
