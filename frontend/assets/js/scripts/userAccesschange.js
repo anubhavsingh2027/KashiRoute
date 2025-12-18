@@ -1,5 +1,5 @@
 
-      import { getUsers, userTypeChanged } from "../Middleware/services";
+      import { getUsers, userTypeChanged } from "../Middleware/services.js";
 
       // === Extract query params from URL ===
       function getQueryParams() {
