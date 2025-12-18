@@ -1,4 +1,4 @@
- import { getUserSession } from "./assets/js/services.js";
+ import { getUserSession } from "../Middleware/services.js";
 
   async function checkAccess() {
     try {
