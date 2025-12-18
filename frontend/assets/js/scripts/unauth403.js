@@ -22,9 +22,9 @@ function goBack() {
 
   setTimeout(() => {
     if (window.history.length > 1) {
-      window.location.href = "/";
+      window.location.href = "/home";
     } else {
-      window.location.href = "/";
+      window.location.href = "/home";
     }
   }, 300);
 }

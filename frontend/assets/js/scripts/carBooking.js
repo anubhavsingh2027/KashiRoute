@@ -147,7 +147,7 @@ const { id: carId, isDelete } = getCarParams();
     if (!userData || !userData.user?._id) {
       message.textContent = "Please login for Booking .";
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = "/home";
       }, 2000);
 
       return;

@@ -50,7 +50,7 @@ const { logoutRequest } = getLogoutParams();
         setTimeout(() => {
           overlay.style.opacity = "1";
           setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/home";
           }, 500);
         }, 100);
       }
@@ -89,7 +89,7 @@ const { logoutRequest } = getLogoutParams();
           setTimeout(() => {
             overlay.style.opacity = "1";
             setTimeout(() => {
-              window.location.href = "/";
+              window.location.href = "/home";
             }, 500);
           }, 100);
         }, 1200);
