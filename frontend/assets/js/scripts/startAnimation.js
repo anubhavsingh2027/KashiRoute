@@ -1,4 +1,4 @@
- import {getUserSession} from "assets/js/Middleware/services.js";
+ import {getUserSession} from "../Middleware/services";
 
 (function () {
   const DURATION_MS = 5000; // 5s total duration
