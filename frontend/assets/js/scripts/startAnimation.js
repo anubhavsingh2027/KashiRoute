@@ -1,4 +1,5 @@
  import {getUserSession} from "assets/js/Middleware/services.js";
+
 (function () {
   const DURATION_MS = 5000; // 5s total duration
   const EMBER_COUNT = 8; // number of floating particles - reduced for subtlety
@@ -240,17 +241,17 @@
     window.location.href = "/home";
   }
 
-// Start when DOM ready
-document.addEventListener("DOMContentLoaded", async () => {
-  await getUserSession();
 
-  // Respect reduced motion preference
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    DURATION_MS = 2000; // Shorter duration
-    // Skip intensive animations
-    document.documentElement.classList.add("reduce-motion");
-  }
+  // Start when DOM ready
+  document.addEventListener("DOMContentLoaded", async() => {
+    startSequence();
 
-  startSequence();
-});
+    const userSession = await getUserSession();
+    // Respect reduced motion preference
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      DURATION_MS = 2000; // Shorter duration
+      // Skip intensive animations
+      document.documentElement.classList.add("reduce-motion");
+    }
+  });
 })();
