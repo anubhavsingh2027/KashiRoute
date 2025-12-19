@@ -13,7 +13,6 @@ function updateTime() {
   document.getElementById("current-time").textContent = timeString;
 }
 
-// Go back function
 function goBack() {
   // Add a nice animation before going back
   document.body.style.opacity = "0.5";
