@@ -2,7 +2,7 @@ import { getUserSession } from "./services.js";
 
 const navbar = document.getElementById("navbar");
 
-// Temporary links to show while loading
+
 const TEMPORARY_LINKS = [
   { name: "Home", href: "/home" },
   { name: "About", href: "/about" },
