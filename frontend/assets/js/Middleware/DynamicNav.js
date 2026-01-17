@@ -13,10 +13,13 @@ const TEMPORARY_LINKS = [
 ];
 
 function buildSkeletonLoader() {
-  const skeletonItems = Array(6).fill(0)
-    .map(() => `
+  const skeletonItems = Array(6)
+    .fill(0)
+    .map(
+      () => `
       <div class="skeleton rounded-lg h-10 w-20 flex-shrink-0"></div>
-    `)
+    `,
+    )
     .join("");
 
   return `
@@ -24,7 +27,7 @@ function buildSkeletonLoader() {
       <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/5 via-blue-500/5 to-purple-600/5 animate-gradient-x"></div>
       </div>
-      
+
       <div class="relative flex items-center justify-between h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Logo Skeleton -->
         <div class="flex-shrink-0">
@@ -95,8 +98,8 @@ function buildLinkHtml(link, isActive) {
           <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/40 via-blue-500/40 to-purple-600/40 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-150"></div>
           <div class="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-purple-500/30 rounded-full blur-sm opacity-0 group-hover:opacity-100 animate-ping"></div>
           <i class="fas ${icon} ${
-    isActive ? "animate-pulse-glow" : "group-hover:animate-float-nav"
-  } text-xs relative z-10 transform group-hover:scale-110 transition-all duration-300 text-gradient"></i>
+            isActive ? "animate-pulse-glow" : "group-hover:animate-float-nav"
+          } text-xs relative z-10 transform group-hover:scale-110 transition-all duration-300 text-gradient"></i>
         </div>
 
         <span class="relative font-bold overflow-hidden">
@@ -176,11 +179,13 @@ async function loadNavbar() {
 
     // Render the final navbar with loaded data
     renderNavbar(links, current);
-
   } catch (error) {
     console.error("Error loading navbar:", error);
     // Show temporary links on error
-    renderNavbar(TEMPORARY_LINKS, window.location.pathname.split("/home").pop() || "/home");
+    renderNavbar(
+      TEMPORARY_LINKS,
+      window.location.pathname.split("/home").pop() || "/home",
+    );
   }
 }
 
@@ -698,60 +703,60 @@ function renderNavbar(links, current) {
       </style>
     `;
 
-    navbar.innerHTML = navHTML;
+  navbar.innerHTML = navHTML;
 
-    // SIMPLIFIED mobile toggle with proper visibility control
-    const mobileBtn = document.getElementById("mobileMenuBtn");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const menuIcon = document.getElementById("menuIcon");
+  // SIMPLIFIED mobile toggle with proper visibility control
+  const mobileBtn = document.getElementById("mobileMenuBtn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuIcon = document.getElementById("menuIcon");
 
-    if (mobileBtn && mobileMenu) {
-      let isOpen = false;
+  if (mobileBtn && mobileMenu) {
+    let isOpen = false;
 
-      mobileBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    mobileBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-        isOpen = !isOpen;
+      isOpen = !isOpen;
 
-        // Simple hamburger to X animation
-        if (isOpen) {
-          menuIcon.setAttribute("d", "M6 18L18 6M6 6l12 12");
-          mobileMenu.classList.add("show");
-          mobileMenu.style.display = "block";
-        } else {
-          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
-          mobileMenu.classList.remove("show");
-          setTimeout(() => {
-            if (!mobileMenu.classList.contains("show")) {
-              mobileMenu.style.display = "none";
-            }
-          }, 300);
-        }
-      });
-
-      // Close menu on window resize if open
-      window.addEventListener("resize", () => {
-        if (window.innerWidth >= 768 && isOpen) {
-          isOpen = false;
-          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
-          mobileMenu.classList.remove("show");
-          mobileMenu.style.display = "none";
-        }
-      });
-
-      // Close menu when clicking a link
-      const mobileNavItems = mobileMenu.querySelectorAll(".mobile-nav-item");
-      mobileNavItems.forEach((item) => {
-        item.addEventListener("click", () => {
-          isOpen = false;
-          menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
-          mobileMenu.classList.remove("show");
-          setTimeout(() => {
+      // Simple hamburger to X animation
+      if (isOpen) {
+        menuIcon.setAttribute("d", "M6 18L18 6M6 6l12 12");
+        mobileMenu.classList.add("show");
+        mobileMenu.style.display = "block";
+      } else {
+        menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+        mobileMenu.classList.remove("show");
+        setTimeout(() => {
+          if (!mobileMenu.classList.contains("show")) {
             mobileMenu.style.display = "none";
-          }, 300);
-        });
+          }
+        }, 300);
+      }
+    });
+
+    // Close menu on window resize if open
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768 && isOpen) {
+        isOpen = false;
+        menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+        mobileMenu.classList.remove("show");
+        mobileMenu.style.display = "none";
+      }
+    });
+
+    // Close menu when clicking a link
+    const mobileNavItems = mobileMenu.querySelectorAll(".mobile-nav-item");
+    mobileNavItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        isOpen = false;
+        menuIcon.setAttribute("d", "M4 6h16M4 12h16M4 18h16");
+        mobileMenu.classList.remove("show");
+        setTimeout(() => {
+          mobileMenu.style.display = "none";
+        }, 300);
       });
-    }
+    });
+  }
 }
 loadNavbar();
