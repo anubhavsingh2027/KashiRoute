@@ -2,6 +2,61 @@ import { getUserSession } from "./services.js";
 
 const navbar = document.getElementById("navbar");
 
+// Temporary links to show while loading
+const TEMPORARY_LINKS = [
+  { name: "Home", href: "/home" },
+  { name: "About", href: "/about" },
+  { name: "Packages", href: "/packageDetails" },
+  { name: "Cars", href: "/carDetails" },
+  { name: "Contact", href: "contact" },
+  { name: "Sign In", href: "/login" },
+];
+
+function buildSkeletonLoader() {
+  const skeletonItems = Array(6).fill(0)
+    .map(() => `
+      <div class="skeleton rounded-lg h-10 w-20 flex-shrink-0"></div>
+    `)
+    .join("");
+
+  return `
+    <div class="w-full bg-gradient-to-r from-white/95 via-gray-50/95 to-white/95 text-black backdrop-blur-2xl supports-[backdrop-filter]:bg-opacity-95 shadow-2xl shadow-black/20 border-b border-gradient relative overflow-hidden">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400/5 via-blue-500/5 to-purple-600/5 animate-gradient-x"></div>
+      </div>
+      
+      <div class="relative flex items-center justify-between h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Logo Skeleton -->
+        <div class="flex-shrink-0">
+          <div class="flex items-center gap-4">
+            <div class="skeleton rounded-full h-12 w-12"></div>
+            <div class="hidden md:block">
+              <div class="skeleton rounded h-6 w-24 mb-2"></div>
+              <div class="skeleton rounded h-3 w-16"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Skeleton -->
+        <div class="hidden md:flex md:items-center">
+          <div class="nav-container relative bg-white/80 backdrop-blur-2xl rounded-3xl p-3 shadow-2xl border border-white/50 overflow-hidden flex items-center gap-2">
+            ${skeletonItems}
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button Skeleton -->
+        <div class="flex md:hidden">
+          <div class="skeleton rounded-xl p-3 w-12 h-12"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function showLoadingState() {
+  navbar.innerHTML = buildSkeletonLoader();
+}
+
 function buildLinkHtml(link, isActive) {
   const iconMap = {
     Home: "fa-home",
@@ -73,6 +128,10 @@ function buildLinkHtml(link, isActive) {
 
 async function loadNavbar() {
   try {
+    // Show skeleton loader and temporary links immediately while API call is in progress
+    showLoadingState();
+
+    // Then make the API call
     const session = await getUserSession();
     const { loggedIn: LoggedIn, user } = session || {};
     const userType = user?.userType || null;
@@ -115,49 +174,18 @@ async function loadNavbar() {
 
     const current = window.location.pathname.split("/home").pop() || "/home";
 
-    // Build navbar markup
-    const navContent = `
-    <div class="max-w-full mx-auto px-2 sm:px-4 lg:px-6">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex-none flex items-center gap-2 pl-2">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 flex items-center justify-center shadow-lg">
-            <i class="fas fa-route text-white text-sm"></i>
-          </div>
-          <span class="text-sm font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-600 whitespace-nowrap">
-            Kashika
-          </span>
-        </div>
+    // Render the final navbar with loaded data
+    renderNavbar(links, current);
 
-        <!-- Navigation Links -->
-        <div class="hidden md:flex items-center justify-end flex-1 overflow-x-auto space-x-0.5 px-2">
-          ${links
-            .map((link, index) =>
-              buildLinkHtml(link, link.href.split("/home").pop() === current)
-            )
-            .join("")}
-        </div>
+  } catch (error) {
+    console.error("Error loading navbar:", error);
+    // Show temporary links on error
+    renderNavbar(TEMPORARY_LINKS, window.location.pathname.split("/home").pop() || "/home");
+  }
+}
 
-        <!-- Mobile menu button -->
-        <div class="flex md:hidden">
-          <button id="mobile-menu-button" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-            <i class="fas fa-bars text-gray-600"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200">
-      <div class="px-2 pt-2 pb-3 space-y-1">
-        ${links
-          .map((link, index) =>
-            buildLinkHtml(link, link.href.split("/home").pop() === current)
-          )
-          .join("")}
-      </div>
-    </div>
-    `;
-    navbar.innerHTML = `
+function renderNavbar(links, current) {
+  const navHTML = `
       <div class="w-full bg-gradient-to-r from-white/95 via-gray-50/95 to-white/95 text-black backdrop-blur-2xl supports-[backdrop-filter]:bg-opacity-95 animate-nav-slide-down shadow-2xl shadow-black/20 border-b border-gradient relative overflow-hidden">
         <!-- Advanced animated background -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
@@ -670,6 +698,8 @@ async function loadNavbar() {
       </style>
     `;
 
+    navbar.innerHTML = navHTML;
+
     // SIMPLIFIED mobile toggle with proper visibility control
     const mobileBtn = document.getElementById("mobileMenuBtn");
     const mobileMenu = document.getElementById("mobile-menu");
@@ -723,9 +753,5 @@ async function loadNavbar() {
         });
       });
     }
-  } catch (err) {
-    navbar.innerHTML =
-      '<div class="p-4 bg-slate-800 text-white"><a href="/home">Home</a></div>';
-  }
 }
 loadNavbar();
