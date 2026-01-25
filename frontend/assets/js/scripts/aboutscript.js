@@ -5,7 +5,7 @@
         const packageData = await getAllPackages();
         const carData = await getAllCars();
 
-        // ===================== TYPEWRITER =====================
+        
         const typewriterText = "Your Journey, Our Commitment";
         const typewriterElement = document.getElementById("typewriter");
         let i = 0;
