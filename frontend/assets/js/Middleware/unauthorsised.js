@@ -49,7 +49,6 @@ async function checkAccess() {
     }
   }
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   createLoader();
   const loader = document.getElementById("access-loader");
