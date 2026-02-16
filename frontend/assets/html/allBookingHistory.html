@@ -1,12 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <!-- CRITICAL: Access control - runs before page renders -->
     <script>
       document.documentElement.style.opacity = "0";
-      (async function() {
+      (async function () {
         try {
-          const response = await fetch("/api/check-session", { credentials: "include" });
+          const response = await fetch("/api/check-session", {
+            credentials: "include",
+          });
           const data = await response.json();
           if (!data?.user) {
             window.location.href = "/unauthorsisedAccess";
