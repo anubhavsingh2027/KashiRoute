@@ -13,7 +13,19 @@
             window.location.href = "/unauthorsisedAccess";
             return;
           }
+          // User authorized - show page and hide loader
           document.documentElement.style.opacity = "1";
+          // Remove loader after fade out
+          const loader = document.getElementById("access-loader");
+          if (loader) {
+            loader.style.opacity = "0";
+            loader.style.transition = "opacity 0.4s ease";
+            setTimeout(() => {
+              if (loader && loader.parentElement) {
+                loader.remove();
+              }
+            }, 400);
+          }
         } catch (error) {
           console.error("Access check failed:", error);
           window.location.href = "/unauthorsisedAccess";

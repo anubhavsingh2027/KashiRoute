@@ -79,7 +79,7 @@ exports.postLogin = async (req, res) => {
     //  Create full JWT payload
     const tokenPayload = {
       isLogged: true,
-      user: safeUser, // all data here
+      user: safeUser, 
     };
 
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
