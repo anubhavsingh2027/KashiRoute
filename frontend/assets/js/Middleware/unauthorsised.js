@@ -42,7 +42,7 @@ export async function verifyAccessOnPageLoad() {
 }
 
 /**
- * Optional: Call this if you need to verify access at specific points
+ * Optional: Call this if you need to verify access at specific pointsū
  * For pages that have already passed the initial HTML head check
  */
 export async function checkAdditionalAccess() {
