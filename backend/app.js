@@ -1,76 +1,62 @@
 // ===== Core modules =====
-require('dotenv').config();
-const express = require('express');
-const cookieParser = require('cookie-parser');
+const dotenv = require("dotenv").config();
+const express = require("express");
+const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
 // ===== External modules =====
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
 
 // ===== Local modules =====
-const fetchRouter = require('./router/fetchdata');
-const bookRouter = require('./router/bookRouter');
-const authRouter = require('./router/AuthRouter');
-const adminSetRouter = require('./router/adminResourcesSet');
-
+const fetchRouter = require("./router/fetchdata");
+const bookRouter = require("./router/bookRouter");
+const authRouter = require("./router/AuthRouter");
+const adminSetRouter = require("./router/adminResourcesSet");
+const paymentRouter = require("./router/paymentRouter");
+const startRouter = require("./router/startRouter");
+const mongoDb = require("./config/db");
 
 // ===== App & DB setup =====
 const app = express();
-const mongoUrl = process.env.MONGO_URI;
 const port = process.env.PORT || 8000;
 
 // ===== Middleware =====
+const rawBodySaver = (req, res, buf, encoding) => {
+  if (buf && buf.length) {
+    req.rawBody = buf.toString(encoding || "utf8");
+  }
+};
+
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json({ verify: rawBodySaver }));
 app.use(cookieParser());
 
 // ===== CORS setup (CRITICAL) =====
-app.use(cors({
-  origin: ["https://kashiroute.nav-code.com"],
-  credentials: true,
-}));
-
-
-//test server
-
-app.get('/',(req,res,next)=>{
-  res.send('server is running');
-});
-
+const development_url=process.env.development_url;
+const production_url=process.env.production_url;
+const state=process.env.NODE_ENV;
+app.use(
+  cors({
+    origin: [
+ state=="production"?production_url:development_url
+    ],
+    credentials: true,
+  }),
+);
 
 // ===== ROUTES =====
-app.use("/kashikaTravel", fetchRouter);
-app.use("/kashikaTravel/admin", adminSetRouter);
-app.use("/kashikaTravel", authRouter);
-app.use("/kashikaTravel", bookRouter);
-
-// ===== Session (JWT) check =====
-app.get("/kashikaTravel/session-user", (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.json({ loggedIn: false, user: { userType: "guest" } });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return res.json({
-      loggedIn: decoded.isLogged,
-      user: decoded.user, // full user data
-    });
-  } catch (err) {
-    return res.json({ loggedIn: false, user: { userType: "guest" } });
-  }
-});
-
+app.use("/", startRouter);
+app.use("/KashiRoute", fetchRouter);
+app.use("/KashiRoute/admin", adminSetRouter);
+app.use("/KashiRoute", authRouter);
+app.use("/KashiRoute", bookRouter);
+app.use("/KashiRoute/payment", paymentRouter);
 
 // ===== Start server =====
-mongoose.connect(mongoUrl)
-  .then(() => {
-    console.log("<======== MongoDB Connected Successfully =======>");
-    app.listen(port, () => {
-      console.log(`Server Running At http://localhost:${port}`);
-    });
-  })
-  .catch(err => console.log("Error connecting MongoDB", err));
+
+app.listen(port, async() => {
+  await mongoDb();
+  console.log(`Server Running`);
+});

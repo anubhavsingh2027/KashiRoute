@@ -1,45 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Kashi Route</title>
-  <link rel="stylesheet" href="assets/css/loading.css" />
-  <link rel="icon" type="image/svg+xml" href="assets/images/icon.svg" />
-</head>
-<body>
-  <!-- Loading Screen Overlay -->
-    <div id="kr-overlay" class="kr-overlay">
-      <!-- Background Elements -->
-      <div class="kr-bg-elements"></div>
-
-      <!-- Sacred Trishul Symbol -->
-      <div class="kr-sacred-symbol"></div>
-
-      <!-- Content Wrapper -->
-      <div class="relative z-10">
-        <div id="kr-stage1" class="kr-stage1">KashiRoute</div>
-        <div id="kr-stage2" class="kr-stage2"></div>
-        <div class="kr-message-container">
-          <div id="kr-message" class="kr-message"></div>
-        </div>
-        <div class="kr-loader">
-          <div class="kr-loader-decorative">
-            <span class="kr-loader-dot"></span>
-            <span class="kr-loader-dot"></span>
-          </div>
-          <div class="kr-loader-text">Loading your sacred journey...</div>
-          <div id="kr-loader-fill"></div>
-          <div id="kr-loader-percentage" class="kr-loader-percentage">0%</div>
-        </div>
-      </div>
-
-      <!-- Particle System -->
-      <div id="kr-embers" class="kr-embers"></div>
-    </div>
-
-
-    <script type="module" src="assets/js/scripts/startAnimation.js"></script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kashi Route</title>
+    <meta
+      name="description"
+      content="Modern React frontend for Kashi Route with landing, home, car booking, and package booking pages."
+    />
+    <link rel="icon" href="/images/icon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

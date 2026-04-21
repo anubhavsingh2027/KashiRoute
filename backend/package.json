@@ -24,7 +24,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.19.0",
     "mongoose": "^8.18.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "razorpay": "^2.9.6",
+    "shortid": "^2.2.17"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
@@ -32,4 +34,3 @@
     "tailwindcss": "^3.4.17"
   }
 }
-

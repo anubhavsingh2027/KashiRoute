@@ -2,6 +2,41 @@ const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// ===== HELPER: Get cookie options based on environment =====
+function getCookieOptions(req) {
+  const isProduction = process.env.NODE_ENV === "production";
+
+
+  return {
+    path: "/",
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax", // Allow cross-origin for both dev and prod
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+}
+
+
+//check Session
+exports.checkSession=async (req, res,next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.json({ loggedIn: false, user: { userType: "guest" } });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    return res.json({
+      loggedIn: decoded.isLogged,
+      user: decoded.user, // full user data
+    });
+  } catch (err) {
+    return res.json({ loggedIn: false, user: { userType: "guest" } });
+  }
+}
+
 // ===== SIGNUP =====
 exports.postSignUp = async (req, res) => {
   const { userName, email, phone, location, password } = req.body;
@@ -9,7 +44,9 @@ exports.postSignUp = async (req, res) => {
     //  Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
-      return res.status(400).json({ status: false, message: "User already exists" });
+      return res
+        .status(400)
+        .json({ status: false, message: "User already exists" });
     }
 
     //  Hash password and create new user
@@ -38,13 +75,10 @@ exports.postSignUp = async (req, res) => {
       expiresIn: process.env.JWT_EXPIRES_IN || "1d",
     });
 
-    //  Store token in cookie (secure for cross-origin)
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24,
-    });
+    //  Store token in cookie with environment-aware options
+    const cookieOpts = getCookieOptions(req);
+    res.cookie("token", token, cookieOpts);
+
 
     //  Send same type of response as postLogin
     res.status(200).json({
@@ -54,7 +88,9 @@ exports.postSignUp = async (req, res) => {
       user: safeUser,
     });
   } catch (err) {
-    res.status(500).json({ status: false, message: "Server error during signup" });
+    res
+      .status(500)
+      .json({ status: false, message: "Server error during signup" });
   }
 };
 
@@ -71,7 +107,9 @@ exports.postLogin = async (req, res) => {
     //  Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
-      return res.status(422).json({ status: false, message: "Incorrect password" });
+      return res
+        .status(422)
+        .json({ status: false, message: "Incorrect password" });
 
     //  Remove password before encoding
     const { password: _, ...safeUser } = user;
@@ -79,22 +117,19 @@ exports.postLogin = async (req, res) => {
     //  Create full JWT payload
     const tokenPayload = {
       isLogged: true,
-      user: safeUser, 
+      user: safeUser,
     };
 
     const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || "1d",
     });
 
-    //  Send cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true, // true on HTTPS
-      sameSite: "none",
-      maxAge: 1000 * 60 * 60 * 24,
-    });
+    //  Send cookie with environment-aware options
+    const cookieOpts = getCookieOptions(req);
+    res.cookie("token", token, cookieOpts);
 
-    //  Send response
+
+
     res.status(200).json({
       status: true,
       message: `Welcome again Mrs/Mr  ${user.userName}`,
@@ -102,7 +137,9 @@ exports.postLogin = async (req, res) => {
       user: safeUser,
     });
   } catch (err) {
-    res.status(500).json({ status: false, message: `Failed To Login: ${err.message}` });
+    res
+      .status(500)
+      .json({ status: false, message: `Failed To Login: ${err.message}` });
   }
 };
 
@@ -118,40 +155,44 @@ exports.postForget = async (req, res) => {
 
     const isSamePassword = await bcrypt.compare(password, user.password);
     if (isSamePassword) {
-      return res.status(422).json({ status: false, message: "Already Same Password" });
+      return res
+        .status(422)
+        .json({ status: false, message: "Already Same Password" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-     const result = await User.updateOne(
+    const result = await User.updateOne(
       { _id: user._id },
-      { $set: { password: hashedPassword } }
+      { $set: { password: hashedPassword } },
     );
-     if (result.modifiedCount === 0) {
-      return res.status(500).json({ status: false, message: "Failed To Change Password" });
+    if (result.modifiedCount === 0) {
+      return res
+        .status(500)
+        .json({ status: false, message: "Failed To Change Password" });
     }
-    res.status(200).json({ status: true, message: "Password Change successful" });
+    res
+      .status(200)
+      .json({ status: true, message: "Password Change successful" });
   } catch (err) {
-    res.status(500).json({ status: false, message: "Failed To Change Password" });
+    res
+      .status(500)
+      .json({ status: false, message: "Failed To Change Password" });
   }
 };
 
-
 // ===== LOGOUT =====
 exports.postLogout = (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  });
+  res.clearCookie("token", getCookieOptions(req));
   res.status(200).json({ status: true, message: "Logged out successfully" });
 };
 
-
 exports.verifyJWT = function (req, res, next) {
-  const token = req.cookies.token || req.headers['authorization'];
+  const token = req.cookies.token || req.headers["authorization"];
   if (!token) {
-    return res.status(401).json({ status: false, message: "No token provided!" });
+    return res
+      .status(401)
+      .json({ status: false, message: "No token provided!" });
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -168,17 +209,24 @@ exports.updateUserType = async (req, res) => {
 
     const result = await User.updateOne(
       { _id: id },
-      { $set: { userType: changeType } }
+      { $set: { userType: changeType } },
     );
 
     if (result.modifiedCount === 0) {
-      return res.status(400).json({ status: false, message: "User type not changed" });
+      return res
+        .status(400)
+        .json({ status: false, message: "User type not changed" });
     }
 
-    res.status(200).json({ status: true, message: "User type changed successfully!" });
-
+    res
+      .status(200)
+      .json({ status: true, message: "User type changed successfully!" });
   } catch (err) {
-    res.status(500).json({ status: false, message: "Server error while changing user type" });
+    res
+      .status(500)
+      .json({
+        status: false,
+        message: "Server error while changing user type",
+      });
   }
 };
-
