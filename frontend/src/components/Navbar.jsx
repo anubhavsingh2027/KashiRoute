@@ -7,7 +7,6 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  
 
   const handleLogout = async () => {
     await logoutUser();
