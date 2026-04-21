@@ -1,23 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { getUserSession, logoutUser } from "../api/services";
+import { logoutUser } from "../api/services";
+import { useAuth } from "../contexts/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
-  useEffect(() => {
-    const loadSession = async () => {
-      const session = await getUserSession();
-      if (session?.loggedIn && session?.user) setUser(session.user);
-    };
-    loadSession();
-  }, []);
+  
 
   const handleLogout = async () => {
     await logoutUser();
-    setUser(null);
+    // update global auth context
+    try {
+      logout();
+    } catch (e) {
+      // ignore
+    }
     navigate("/login");
   };
 
