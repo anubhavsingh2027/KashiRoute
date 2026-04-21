@@ -14,10 +14,31 @@ exports.createOrder = async (req, res) => {
   try {
     const { amount, bookingType, bookingDetails, userId } = req.body;
 
-    if (!amount || !bookingType || !bookingDetails || !userId) {
+    // Basic validation
+    if (
+      amount === undefined ||
+      bookingType === undefined ||
+      !bookingDetails ||
+      !userId
+    ) {
       return res.status(400).json({
         success: false,
         message: "Missing required fields",
+      });
+    }
+
+    const numericAmount = Number(amount);
+    if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid amount",
+      });
+    }
+
+    if (!["car", "package"].includes(bookingType)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid bookingType",
       });
     }
 
@@ -175,6 +196,8 @@ const performBooking = async (payment) => {
       });
     }
   } catch (error) {
+    console.error("performBooking error:", error);
+    // Consider setting payment.status = 'failed' or adding a retry mechanism here
   }
 };
 

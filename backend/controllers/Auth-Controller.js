@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 function getCookieOptions(req) {
   const isProduction = process.env.NODE_ENV === "production";
 
-
   return {
     path: "/",
     httpOnly: true,
@@ -16,9 +15,8 @@ function getCookieOptions(req) {
   };
 }
 
-
 //check Session
-exports.checkSession=async (req, res,next) => {
+exports.checkSession = async (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
@@ -35,7 +33,7 @@ exports.checkSession=async (req, res,next) => {
   } catch (err) {
     return res.json({ loggedIn: false, user: { userType: "guest" } });
   }
-}
+};
 
 // ===== SIGNUP =====
 exports.postSignUp = async (req, res) => {
@@ -78,7 +76,6 @@ exports.postSignUp = async (req, res) => {
     //  Store token in cookie with environment-aware options
     const cookieOpts = getCookieOptions(req);
     res.cookie("token", token, cookieOpts);
-
 
     //  Send same type of response as postLogin
     res.status(200).json({
@@ -127,8 +124,6 @@ exports.postLogin = async (req, res) => {
     //  Send cookie with environment-aware options
     const cookieOpts = getCookieOptions(req);
     res.cookie("token", token, cookieOpts);
-
-
 
     res.status(200).json({
       status: true,
@@ -188,7 +183,11 @@ exports.postLogout = (req, res) => {
 };
 
 exports.verifyJWT = function (req, res, next) {
-  const token = req.cookies.token || req.headers["authorization"];
+  let token = req.cookies.token || req.headers["authorization"];
+  // If Authorization header is in the form 'Bearer <token>' strip the prefix
+  if (typeof token === "string" && token.toLowerCase().startsWith("bearer ")) {
+    token = token.slice(7).trim();
+  }
   if (!token) {
     return res
       .status(401)
@@ -222,11 +221,9 @@ exports.updateUserType = async (req, res) => {
       .status(200)
       .json({ status: true, message: "User type changed successfully!" });
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        status: false,
-        message: "Server error while changing user type",
-      });
+    res.status(500).json({
+      status: false,
+      message: "Server error while changing user type",
+    });
   }
 };

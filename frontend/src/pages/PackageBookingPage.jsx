@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Removed local sample data import — initialize empty and rely on API
-import { bookPackage, getAllPackages, getUserSession } from "../api/services";
+import {
+  bookPackage,
+  getAllPackages,
+  getUserSession,
+  createOrder,
+  getRazorpayKey,
+  verifyPayment,
+} from "../api/services";
 
 function formatIndianNumber(value) {
   return new Intl.NumberFormat("en-IN").format(value);
@@ -87,29 +94,83 @@ function PackageBookingPage() {
 
     setIsSubmitting(true);
 
-    const bookingData = {
-      userId: user._id,
+    const bookingDetails = {
       packageName: selectedPackage.packageName,
       price: selectedPackage.price,
-      guestCount,
+      guestNo: guestCount,
       arrivalDate,
       request: notes,
       totalPrice,
     };
 
-    const result = await bookPackage(bookingData);
-    setIsSubmitting(false);
+    try {
+      const orderResp = await createOrder({
+        amount: totalPrice,
+        bookingType: "package",
+        bookingDetails,
+        userId: user._id,
+      });
 
-    if (result?.error) {
+      if (!orderResp || orderResp.error || !orderResp.order) {
+        setIsError(true);
+        setMessage(orderResp?.message || "Failed to create payment order.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const keyResp = await getRazorpayKey();
+      const razorKey = keyResp?.key;
+
+      await new Promise((resolve, reject) => {
+        if (window.Razorpay) return resolve();
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+      });
+
+      const options = {
+        key: razorKey,
+        amount: orderResp.order.amount,
+        currency: orderResp.order.currency || "INR",
+        name: "Kashi Route",
+        description: `Package - ${selectedPackage.packageName}`,
+        order_id: orderResp.order.id,
+        handler: async function (response) {
+          const verifyResp = await verifyPayment({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          });
+
+          setIsSubmitting(false);
+
+          if (verifyResp?.success) {
+            setIsSubmitted(true);
+            setIsError(false);
+            setMessage("Payment successful and booking completed.");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            setIsError(true);
+            setMessage(verifyResp?.message || "Payment verification failed.");
+          }
+        },
+        prefill: {
+          name: user.userName,
+          email: user.email,
+        },
+        theme: { color: "#6b21a8" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
       setIsError(true);
-      setMessage(result.message || "Package booking failed. Please try again.");
-      return;
+      setMessage(err?.message || "Payment flow failed. Try again later.");
+      console.error(err);
+      setIsSubmitting(false);
     }
-
-    setIsSubmitted(true);
-    setMessage(result.message || "Package booked successfully!");
-    setIsError(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (
