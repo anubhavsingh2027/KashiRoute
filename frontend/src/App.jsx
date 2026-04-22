@@ -26,7 +26,7 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<ServerLoader />}>
+      <Route path="/" element={<Layout />}>
         <Route index element={<ServerLoader />} />
 
         {/* User Pages */}
