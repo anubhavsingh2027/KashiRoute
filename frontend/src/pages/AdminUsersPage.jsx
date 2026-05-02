@@ -38,7 +38,7 @@ export default function AdminUsersPage() {
     setSuccess("");
 
     try {
-      const response = await changeUserType({ userId, userType: newType });
+      const response = await changeUserType({ userId, changeType: newType });
       if (response?.status || !response?.error) {
         setUsers(
           users.map((u) =>
