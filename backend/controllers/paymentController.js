@@ -3,6 +3,8 @@ const crypto = require("crypto");
 const shortid = require("shortid");
 const Payment = require("../models/paymentModel");
 const User = require("../models/UserModel");
+const CarBooking = require("../models/CarBookingModel");
+const PackageBooking = require("../models/PackageBookingModel");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -175,25 +177,23 @@ const performBooking = async (payment) => {
     const { userId, bookingType, bookingDetails } = payment;
 
     if (bookingType === "package") {
-      await User.findByIdAndUpdate(userId, {
-        $push: {
-          packageBook: {
-            ...bookingDetails,
-            bookingDate: new Date(),
-            paymentId: payment._id,
-          },
-        },
+      const packageBooking = new PackageBooking({
+        userId,
+        ...bookingDetails,
+        bookingDate: new Date(),
+        paymentId: payment._id,
+        status: "confirmed",
       });
+      await packageBooking.save();
     } else if (bookingType === "car") {
-      await User.findByIdAndUpdate(userId, {
-        $push: {
-          carBooking: {
-            ...bookingDetails,
-            bookingDate: new Date(),
-            paymentId: payment._id,
-          },
-        },
+      const carBooking = new CarBooking({
+        userId,
+        ...bookingDetails,
+        bookingDate: new Date(),
+        paymentId: payment._id,
+        status: "confirmed",
       });
+      await carBooking.save();
     }
   } catch (error) {
     console.error("performBooking error:", error);

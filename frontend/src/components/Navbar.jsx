@@ -1,12 +1,43 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logoutUser } from "../api/services";
+import {
+  logoutUser,
+  getUserCarBookings,
+  getUserPackageBookings,
+} from "../api/services";
 import { useAuth } from "../contexts/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [carBookingCount, setCarBookingCount] = useState(0);
+  const [packageBookingCount, setPackageBookingCount] = useState(0);
+
+  // Fetch booking counts when user changes
+  useEffect(() => {
+    if (user && user._id) {
+      // For host users, don't make API calls - just set to 0
+      if (user.userType === "host") {
+        setCarBookingCount(0);
+        setPackageBookingCount(0);
+      } else {
+        const fetchBookingCounts = async () => {
+          try {
+            const carBookings = await getUserCarBookings(user._id);
+            const packageBookings = await getUserPackageBookings(user._id);
+
+            setCarBookingCount(carBookings?.data?.length || 0);
+            setPackageBookingCount(packageBookings?.data?.length || 0);
+          } catch (error) {
+            console.error("Error fetching booking counts:", error);
+          }
+        };
+
+        fetchBookingCounts();
+      }
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     await logoutUser();
@@ -166,26 +197,28 @@ function Navbar() {
                         </div>
                       </div>
 
-                      <div className="text-sm text-gray-700 mb-3">
-                        <div>
-                          Phone:{" "}
-                          <span className="font-medium">
-                            {user.phone || "-"}
-                          </span>
+                      {user.userType !== "host" && (
+                        <div className="text-sm text-gray-700 mb-3">
+                          <div>
+                            Phone:{" "}
+                            <span className="font-medium">
+                              {user.phone || "-"}
+                            </span>
+                          </div>
+                          <div>
+                            Car bookings:{" "}
+                            <span className="font-medium">
+                              {carBookingCount}
+                            </span>
+                          </div>
+                          <div>
+                            Package bookings:{" "}
+                            <span className="font-medium">
+                              {packageBookingCount}
+                            </span>
+                          </div>
                         </div>
-                        <div>
-                          Car bookings:{" "}
-                          <span className="font-medium">
-                            {(user.carBooking || []).length}
-                          </span>
-                        </div>
-                        <div>
-                          Package bookings:{" "}
-                          <span className="font-medium">
-                            {(user.packageBook || []).length}
-                          </span>
-                        </div>
-                      </div>
+                      )}
 
                       {user.userType === "host" && (
                         <button
@@ -264,10 +297,10 @@ function Navbar() {
                 <div className="text-xs text-gray-500">{user.email}</div>
                 <div className="flex gap-3 mt-2 text-sm">
                   <div>
-                    Cars: <strong>{(user.carBooking || []).length}</strong>
+                    Cars: <strong>{carBookingCount}</strong>
                   </div>
                   <div>
-                    Packages: <strong>{(user.packageBook || []).length}</strong>
+                    Packages: <strong>{packageBookingCount}</strong>
                   </div>
                 </div>
                 {user.userType === "host" && (

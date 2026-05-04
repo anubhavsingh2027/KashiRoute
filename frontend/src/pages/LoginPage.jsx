@@ -32,7 +32,15 @@ export default function LoginPage() {
         setSuccess("Login successful! Redirecting...");
         setTimeout(() => navigate("/home"), 1500);
       } else {
-        setError(response?.message || "Login failed");
+        // Check if email verification is required
+        if (response?.requiresVerification) {
+          setError(
+            response?.message +
+              " Go to signup page and enter the same email to verify.",
+          );
+        } else {
+          setError(response?.message || "Login failed");
+        }
       }
     } catch (err) {
       setError("Network error. Please try again.");

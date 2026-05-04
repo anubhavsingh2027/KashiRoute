@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  getUserSession,
-  getAllUsers,
-  getAllCars,
-  getAllPackages,
-} from "../api/services.js";
+import { getUserSession, getAdminHistory } from "../api/services.js";
 import "../styles.css";
 import HistoryAnalytics from "../components/HistoryAnalytics.jsx";
 
@@ -13,6 +8,7 @@ export default function AdminHistoryPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
+  const [usersWithBookings, setUsersWithBookings] = useState([]);
   const [filterType, setFilterType] = useState("all");
   const [searchEmail, setSearchEmail] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
@@ -20,22 +16,45 @@ export default function AdminHistoryPage() {
 
   useEffect(() => {
     const checkAndLoad = async () => {
-      const session = await getUserSession();
-      if (!session?.loggedIn || session?.user?.userType !== "host") {
-        navigate("/unauthorized");
-        return;
-      }
-      setUser(session.user);
+      try {
+        const session = await getUserSession();
+        if (!session?.loggedIn || session?.user?.userType !== "host") {
+          navigate("/unauthorized");
+          return;
+        }
+        setUser(session.user);
 
-      const data = await getAllUsers();
-      setUsers(data.users || data);
-      setLoading(false);
+        // Fetch all admin history in a single efficient call
+        const adminData = await getAdminHistory();
+
+        if (adminData?.success) {
+          // Extract users and their bookings from the response
+          const enrichedUsers = adminData.historyByUser.map((userHistory) => ({
+            _id: userHistory.userId,
+            userName: userHistory.userName,
+            email: userHistory.email,
+            phone: userHistory.phone,
+            location: userHistory.location,
+            carBooking: userHistory.bookingHistory?.cars || [],
+            packageBook: userHistory.bookingHistory?.packages || [],
+          }));
+
+          setUsers(enrichedUsers);
+          setUsersWithBookings(enrichedUsers);
+        } else {
+          console.error("Failed to fetch admin history:", adminData?.message);
+        }
+      } catch (error) {
+        console.error("Error loading admin history:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     checkAndLoad();
   }, [navigate]);
 
   const getFilteredUsers = () => {
-    let filtered = users;
+    let filtered = usersWithBookings;
     if (searchEmail) {
       filtered = filtered.filter((u) =>
         u.email?.toLowerCase().includes(searchEmail.toLowerCase()),

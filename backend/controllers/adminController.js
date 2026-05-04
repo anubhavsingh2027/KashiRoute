@@ -1,18 +1,20 @@
-const carDetailsModel=require("../models/carDetailsModel");
-const packageDetailsModel=require('../models/packagedetailsModel');
-
-
+const carDetailsModel = require("../models/carDetailsModel");
+const packageDetailsModel = require("../models/packagedetailsModel");
+const UserModel = require("../models/UserModel");
+const CarBookingModel = require("../models/CarBookingModel");
+const PackageBookingModel = require("../models/PackageBookingModel");
 
 exports.createPackage = async (req, res, next) => {
   try {
-    const { packageName, place, url, description, price ,packageDuration} = req.body;
+    const { packageName, place, url, description, price, packageDuration } =
+      req.body;
     const packageInfo = new packageDetailsModel({
       packageName,
       place,
       packageDuration,
       url,
       description,
-      price
+      price,
     });
 
     await packageInfo.save();
@@ -25,50 +27,114 @@ exports.createPackage = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: "Server Error",
-      error: err.message
+      error: err.message,
     });
   }
 };
 
-
-exports.deletepackage =async (req,res,next)=>{
+exports.deletepackage = async (req, res, next) => {
   const id = req.params.id;
   await packageDetailsModel.findByIdAndDelete(id);
   res.status(200).json({
-      success: true,
-      message: "Package deleted successfully!",
-    });
-}
-
+    success: true,
+    message: "Package deleted successfully!",
+  });
+};
 
 exports.createCar = async (req, res, next) => {
-  try{
-const { carName,url,description,price,totalSeats} = req.body;
-  const carInfo = new carDetailsModel({ carName,url,description,price,totalSeats });
-  await carInfo.save();
+  try {
+    const { carName, url, description, price, totalSeats } = req.body;
+    const carInfo = new carDetailsModel({
+      carName,
+      url,
+      description,
+      price,
+      totalSeats,
+    });
+    await carInfo.save();
     res.status(201).json({
       success: true,
       message: "Car booked successfully!",
     });
-
-}catch(err){
-
- res.status(500).json({
+  } catch (err) {
+    res.status(500).json({
       success: false,
-      message:"Server Error",
-      error:err.message
+      message: "Server Error",
+      error: err.message,
     });
-
-  };
-
+  }
 };
 
-
-exports.deleteCar =async (req,res,next)=>{
- const id = req.params.id;
+exports.deleteCar = async (req, res, next) => {
+  const id = req.params.id;
   await carDetailsModel.findByIdAndDelete(id);
   res.status(200).json({
-      success: true,
-      message: "Car deleted successfully!",
+    success: true,
+    message: "Car deleted successfully!",
+  });
+};
+
+// ===== ADMIN HISTORY - Get all user bookings efficiently =====
+exports.getAllAdminHistory = async (req, res, next) => {
+  try {
+    // Step 1: Fetch all users
+    const allUsers = await UserModel.find().select("-password -otp -otpExpiry");
+
+    // Step 2: Fetch all car and package bookings in parallel
+    const [carBookings, packageBookings] = await Promise.all([
+      CarBookingModel.find().populate("userId", "userName email phone").lean(),
+      PackageBookingModel.find()
+        .populate("userId", "userName email phone")
+        .lean(),
+    ]);
+
+    // Step 3: Combine bookings by user
+    const historyByUser = allUsers.map((user) => {
+      const userCarBookings = carBookings.filter(
+        (booking) => booking.userId._id.toString() === user._id.toString(),
+      );
+
+      const userPackageBookings = packageBookings.filter(
+        (booking) => booking.userId._id.toString() === user._id.toString(),
+      );
+
+      return {
+        userId: user._id,
+        userName: user.userName,
+        email: user.email,
+        phone: user.phone,
+        location: user.location,
+        totalBookings: userCarBookings.length + userPackageBookings.length,
+        carBookings: userCarBookings.length,
+        packageBookings: userPackageBookings.length,
+        bookingHistory: {
+          cars: userCarBookings,
+          packages: userPackageBookings,
+        },
+      };
     });
-}
+
+    // Step 4: Calculate summary statistics
+    const summary = {
+      totalUsers: allUsers.length,
+      totalCarBookings: carBookings.length,
+      totalPackageBookings: packageBookings.length,
+      totalBookings: carBookings.length + packageBookings.length,
+    };
+
+    res.status(200).json({
+      success: true,
+      message: "Admin history fetched successfully",
+      summary,
+      historyByUser,
+      allCarBookings: carBookings,
+      allPackageBookings: packageBookings,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: err.message,
+    });
+  }
+};

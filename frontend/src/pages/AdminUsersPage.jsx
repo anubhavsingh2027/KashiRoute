@@ -19,15 +19,18 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     const checkAndLoad = async () => {
-      const session = await getUserSession();
-      if (!session?.loggedIn || session?.user?.userType !== "host") {
-        navigate("/unauthorized");
-        return;
+      try {
+        const session = await getUserSession();
+        if (!session?.loggedIn || session?.user?.userType !== "host") {
+          navigate("/unauthorized");
+          return;
+        }
+        setUser(session.user);
+        const data = await getAllUsers();
+        setUsers(data.users || data);
+      } finally {
+        setLoading(false);
       }
-      setUser(session.user);
-      const data = await getAllUsers();
-      setUsers(data.users || data);
-      setLoading(false);
     };
     checkAndLoad();
   }, [navigate]);
@@ -38,7 +41,10 @@ export default function AdminUsersPage() {
     setSuccess("");
 
     try {
-      const response = await changeUserType({ id:userId, changeType: newType });
+      const response = await changeUserType({
+        id: userId,
+        changeType: newType,
+      });
       if (response?.status || !response?.error) {
         setUsers(
           users.map((u) =>

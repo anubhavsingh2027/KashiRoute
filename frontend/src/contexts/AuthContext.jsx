@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   const location = useLocation();
   const hasCheckedRef = useRef(false);
 
-  // Check session on app load
+  // Check session on app load and route changes
   useEffect(() => {
     let mounted = true;
 
@@ -36,8 +36,9 @@ export function AuthProvider({ children }) {
         setUser(null);
         setIsLoggedIn(false);
       } finally {
-        if (!mounted) return;
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -46,19 +47,16 @@ export function AuthProvider({ children }) {
       setUser(null);
       setIsLoggedIn(false);
       setIsLoading(false);
-      // Keep hasCheckedRef false so navigating away triggers a check
       hasCheckedRef.current = false;
       return () => {
         mounted = false;
       };
     }
 
-    // Run session check once per app lifecycle (or after root skip)
-    if (!hasCheckedRef.current) {
-      setIsLoading(true);
-      checkSession();
-      hasCheckedRef.current = true;
-    }
+    // Always check session on first load and when pathname changes (except root)
+    // Reset flag when leaving root so re-checks happen on route changes
+    setIsLoading(true);
+    checkSession();
 
     return () => {
       mounted = false;

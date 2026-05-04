@@ -16,11 +16,12 @@ function getLastNMonths(n = 6) {
 
 export default function HistoryAnalytics({ users = [] }) {
   const data = useMemo(() => {
+    // Note: Bookings are now stored in separate collections, not in user documents
+    // For now, we'll initialize with empty data
     const all = [];
-    users.forEach((u) => {
-      (u.carBooking || []).forEach((b) => all.push({ ...b, type: "car" }));
-      (u.packageBook || []).forEach((b) => all.push({ ...b, type: "package" }));
-    });
+
+    // Keep the structure but users won't have carBooking/packageBook anymore
+    // Future enhancement: Fetch bookings from backend separately for admin dashboard
 
     const totalBookings = all.length;
     const totalRevenue = all.reduce((s, b) => s + (Number(b.price) || 0), 0);

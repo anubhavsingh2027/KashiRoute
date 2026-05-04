@@ -28,15 +28,18 @@ export default function AdminPackagePage() {
 
   useEffect(() => {
     const checkAndLoad = async () => {
-      const session = await getUserSession();
-      if (!session?.loggedIn || session?.user?.userType !== "host") {
-        navigate("/unauthorized");
-        return;
+      try {
+        const session = await getUserSession();
+        if (!session?.loggedIn || session?.user?.userType !== "host") {
+          navigate("/unauthorized");
+          return;
+        }
+        setUser(session.user);
+        const data = await getAllPackages();
+        setPackages(Array.isArray(data) ? data : data.packages || []);
+      } finally {
+        setLoading(false);
       }
-      setUser(session.user);
-      const data = await getAllPackages();
-      setPackages(Array.isArray(data) ? data : data.packages || []);
-      setLoading(false);
     };
     checkAndLoad();
   }, [navigate]);

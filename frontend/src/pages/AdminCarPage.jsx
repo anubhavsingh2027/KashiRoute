@@ -27,15 +27,18 @@ export default function AdminCarPage() {
 
   useEffect(() => {
     const checkAndLoad = async () => {
-      const session = await getUserSession();
-      if (!session?.loggedIn || session?.user?.userType !== "host") {
-        navigate("/unauthorized");
-        return;
+      try {
+        const session = await getUserSession();
+        if (!session?.loggedIn || session?.user?.userType !== "host") {
+          navigate("/unauthorized");
+          return;
+        }
+        setUser(session.user);
+        const data = await getAllCars();
+        setCars(Array.isArray(data) ? data : data.cars || []);
+      } finally {
+        setLoading(false);
       }
-      setUser(session.user);
-      const data = await getAllCars();
-      setCars(Array.isArray(data) ? data : data.cars || []);
-      setLoading(false);
     };
     checkAndLoad();
   }, [navigate]);

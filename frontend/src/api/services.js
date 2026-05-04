@@ -1,11 +1,9 @@
-
 const API_BASE =
   import.meta.env.MODE === "production"
     ? import.meta.env.VITE_PRODUCTION_URL
     : import.meta.env.VITE_DEV_URL;
 
 const MAIL_API = import.meta.env.VITE_MAIL_API;
-
 
 export async function getCheck() {
   try {
@@ -30,7 +28,6 @@ export async function getCheck() {
 }
 
 export default getCheck;
-
 
 async function fetchJson(path, options = {}) {
   try {
@@ -67,10 +64,31 @@ export async function registerUser(userData) {
   });
 }
 
+export async function verifySignupOTP(verifyData) {
+  return await fetchJson("verify-signup-otp", {
+    method: "POST",
+    body: JSON.stringify(verifyData),
+  });
+}
+
+export async function resendOTP(resendData) {
+  return await fetchJson("resend-otp", {
+    method: "POST",
+    body: JSON.stringify(resendData),
+  });
+}
+
 export async function forgetPassword(forgetData) {
   return await fetchJson("forgetPassword", {
     method: "POST",
     body: JSON.stringify(forgetData),
+  });
+}
+
+export async function verifyForgotOTP(verifyData) {
+  return await fetchJson("verify-forgot-otp", {
+    method: "POST",
+    body: JSON.stringify(verifyData),
   });
 }
 
@@ -114,6 +132,52 @@ export async function getUserHistory(userId) {
   return await fetchJson(`userHistory/${userId}`);
 }
 
+// Get specific booking types for a user
+export async function getUserCarBookings(userId) {
+  return await fetchJson(`carBookings/${userId}`);
+}
+
+export async function getUserPackageBookings(userId) {
+  return await fetchJson(`packageBookings/${userId}`);
+}
+
+// Get individual bookings
+export async function getCarBookingById(bookingId) {
+  return await fetchJson(`carBooking/${bookingId}`);
+}
+
+export async function getPackageBookingById(bookingId) {
+  return await fetchJson(`packageBooking/${bookingId}`);
+}
+
+// Update bookings
+export async function updateCarBooking(bookingId, updateData) {
+  return await fetchJson(`carBooking/${bookingId}`, {
+    method: "PUT",
+    body: JSON.stringify(updateData),
+  });
+}
+
+export async function updatePackageBooking(bookingId, updateData) {
+  return await fetchJson(`packageBooking/${bookingId}`, {
+    method: "PUT",
+    body: JSON.stringify(updateData),
+  });
+}
+
+// Cancel bookings
+export async function cancelCarBooking(bookingId) {
+  return await fetchJson(`carBooking/${bookingId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function cancelPackageBooking(bookingId) {
+  return await fetchJson(`packageBooking/${bookingId}`, {
+    method: "DELETE",
+  });
+}
+
 // ===== ADMIN FUNCTIONS =====
 export async function getAllUsers() {
   return await fetchJson("getUser");
@@ -148,6 +212,10 @@ export async function changeUserType(typeData) {
     method: "PUT",
     body: JSON.stringify(typeData),
   });
+}
+
+export async function getAdminHistory() {
+  return await fetchJson("admin/history", { method: "GET" });
 }
 
 // ===== EMAIL & PAYMENT =====

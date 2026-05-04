@@ -16,6 +16,8 @@ const fetchPackage=await packageDetailsModel.find();
 res.json(fetchPackage);
 }
 exports.getUser=async(req,res,next)=>{
-  const fetchUser=await userDetailsModel.find();
-  res.json(fetchUser);
+  const fetchUser = await userDetailsModel.find()
+  .select('userName email phone location userType');
+
+res.json(fetchUser);
 }

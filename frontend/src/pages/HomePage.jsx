@@ -282,93 +282,136 @@ function HomePage() {
             </p>
           </div>
 
-          {(Array.isArray(cars) ? cars : cars?.cars || []).slice(0, 6).length >
-            0 && (
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {(Array.isArray(cars) ? cars : cars?.cars || [])
-                .slice(0, 6)
-                .map((car) => (
-                  <motion.article
-                    key={car._id}
-                    variants={cardVariants}
-                    className="bg-gradient-to-br from-white to-slate-50/80 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden group hover:-translate-y-1 enhanced-card"
-                  >
-                    <div className="relative overflow-hidden aspect-[5/3]">
-                      <img
-                        src={car.url}
-                        alt={car.carName}
-                        className="w-full h-full object-cover transform transition duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      <div className="absolute top-4 right-4 px-3 py-1 bg-emerald-500/90 backdrop-blur-sm rounded-full text-white text-sm font-medium">
-                        <i className="fas fa-check"></i> Available Now
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-br from-white to-slate-50/80 rounded-2xl shadow-lg overflow-hidden"
+                >
+                  <Skeleton height={240} />
+                  <div className="p-6">
+                    <Skeleton height={24} className="mb-4" />
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      <Skeleton height={32} />
+                      <Skeleton height={32} />
+                      <Skeleton height={32} />
+                      <Skeleton height={32} />
+                    </div>
+                    <Skeleton count={2} className="mb-4" />
+                    <div className="flex items-center justify-between pt-4 border-t">
+                      <div>
+                        <Skeleton width={80} height={16} className="mb-1" />
+                        <Skeleton width={60} height={24} />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Skeleton width={32} height={32} circle />
+                        <Skeleton width={80} height={32} />
                       </div>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors">
-                        {car.carName}
-                      </h3>
-                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        <div className="flex items-center gap-2 bg-sky-50 rounded-lg p-2">
-                          <i className="fas fa-snowflake text-sky-500"></i>
-                          <span className="text-sm text-slate-600">
-                            AC Vehicle
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-indigo-50 rounded-lg p-2">
-                          <i className="fas fa-user-group text-indigo-500"></i>
-                          <span className="text-sm text-slate-600">
-                            {car.totalSeats} Seats
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-emerald-50 rounded-lg p-2">
-                          <i className="fas fa-route text-emerald-500"></i>
-                          <span className="text-sm text-slate-600">
-                            City Tours
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 bg-amber-50 rounded-lg p-2">
-                          <i className="fas fa-shield-check text-amber-500"></i>
-                          <span className="text-sm text-slate-600">
-                            Verified
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-slate-600 text-sm line-clamp-2 mb-4">
-                        {car.description}
-                      </p>
-                      <div className="flex items-center justify-between pt-4 border-t">
-                        <div>
-                          <p className="text-sm text-slate-500 mb-1">Per Day</p>
-                          <div className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">
-                            ₹{car.price}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              {(Array.isArray(cars) ? cars : cars?.cars || []).slice(0, 6)
+                .length > 0 ? (
+                <motion.div
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {(Array.isArray(cars) ? cars : cars?.cars || [])
+                    .slice(0, 6)
+                    .map((car) => (
+                      <motion.article
+                        key={car._id}
+                        variants={cardVariants}
+                        className="bg-gradient-to-br from-white to-slate-50/80 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden group hover:-translate-y-1 enhanced-card"
+                      >
+                        <div className="relative overflow-hidden aspect-[5/3]">
+                          <img
+                            src={car.url}
+                            alt={car.carName}
+                            className="w-full h-full object-cover transform transition duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                          <div className="absolute top-4 right-4 px-3 py-1 bg-emerald-500/90 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                            <i className="fas fa-check"></i> Available Now
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Link
-                            to={`/car-details/${car._id}`}
-                            className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors group"
-                          >
-                            <i className="fas fa-eye"></i>
-                          </Link>
-                          <Link
-                            to={`/car-book?id=${car._id}`}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-sky-100 transition-all duration-300"
-                          >
-                            Book Now
-                            <i className="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
-                          </Link>
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors">
+                            {car.carName}
+                          </h3>
+                          <div className="grid grid-cols-2 gap-3 mb-4">
+                            <div className="flex items-center gap-2 bg-sky-50 rounded-lg p-2">
+                              <i className="fas fa-snowflake text-sky-500"></i>
+                              <span className="text-sm text-slate-600">
+                                AC Vehicle
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 bg-indigo-50 rounded-lg p-2">
+                              <i className="fas fa-user-group text-indigo-500"></i>
+                              <span className="text-sm text-slate-600">
+                                {car.totalSeats} Seats
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 bg-emerald-50 rounded-lg p-2">
+                              <i className="fas fa-route text-emerald-500"></i>
+                              <span className="text-sm text-slate-600">
+                                City Tours
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 bg-amber-50 rounded-lg p-2">
+                              <i className="fas fa-shield-check text-amber-500"></i>
+                              <span className="text-sm text-slate-600">
+                                Verified
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-slate-600 text-sm line-clamp-2 mb-4">
+                            {car.description}
+                          </p>
+                          <div className="flex items-center justify-between pt-4 border-t">
+                            <div>
+                              <p className="text-sm text-slate-500 mb-1">
+                                Per Day
+                              </p>
+                              <div className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-indigo-600 bg-clip-text text-transparent">
+                                ₹{car.price}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Link
+                                to={`/car-details/${car._id}`}
+                                className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-colors group"
+                              >
+                                <i className="fas fa-eye"></i>
+                              </Link>
+                              <Link
+                                to={`/car-book?id=${car._id}`}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-sky-100 transition-all duration-300"
+                              >
+                                Book Now
+                                <i className="fas fa-arrow-right text-sm transition-transform group-hover:translate-x-1"></i>
+                              </Link>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-            </motion.div>
+                      </motion.article>
+                    ))}
+                </motion.div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-lg text-gray-500">
+                    No vehicles available at the moment
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
