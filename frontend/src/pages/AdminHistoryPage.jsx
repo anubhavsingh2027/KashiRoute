@@ -9,6 +9,7 @@ export default function AdminHistoryPage() {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [usersWithBookings, setUsersWithBookings] = useState([]);
+  const [summary, setSummary] = useState(null);
   const [filterType, setFilterType] = useState("all");
   const [searchEmail, setSearchEmail] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
@@ -28,6 +29,9 @@ export default function AdminHistoryPage() {
         const adminData = await getAdminHistory();
 
         if (adminData?.success) {
+          // Store summary with revenue data
+          setSummary(adminData.summary);
+
           // Extract users and their bookings from the response
           const enrichedUsers = adminData.historyByUser.map((userHistory) => ({
             _id: userHistory.userId,
@@ -181,6 +185,45 @@ export default function AdminHistoryPage() {
 
         {/* Analytics */}
         <HistoryAnalytics users={users} />
+
+        {/* Summary Stats with Revenue */}
+        {summary && (
+          <div className="grid md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="text-sm text-gray-600 mb-2">Total Users</div>
+              <div className="text-3xl font-bold text-blue-600">
+                {summary.totalUsers}
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="text-sm text-gray-600 mb-2">Car Bookings</div>
+              <div className="text-3xl font-bold text-cyan-600">
+                {summary.totalCarBookings}
+              </div>
+              <div className="text-xs text-emerald-600 mt-2">
+                ₹{summary.totalCarRevenue?.toLocaleString() || 0}
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="text-sm text-gray-600 mb-2">Package Bookings</div>
+              <div className="text-3xl font-bold text-purple-600">
+                {summary.totalPackageBookings}
+              </div>
+              <div className="text-xs text-emerald-600 mt-2">
+                ₹{summary.totalPackageRevenue?.toLocaleString() || 0}
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-lg shadow p-6 border-2 border-emerald-200">
+              <div className="text-sm text-gray-600 mb-2">Total Revenue</div>
+              <div className="text-3xl font-bold text-emerald-600">
+                ₹{summary.totalRevenue?.toLocaleString() || 0}
+              </div>
+              <div className="text-xs text-gray-500 mt-2">
+                {summary.totalBookings} total bookings
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Controls */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">

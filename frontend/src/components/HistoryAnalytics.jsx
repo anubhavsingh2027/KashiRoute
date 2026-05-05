@@ -16,12 +16,30 @@ function getLastNMonths(n = 6) {
 
 export default function HistoryAnalytics({ users = [] }) {
   const data = useMemo(() => {
-    // Note: Bookings are now stored in separate collections, not in user documents
-    // For now, we'll initialize with empty data
+    // Extract all bookings from users: combine car and package bookings
     const all = [];
 
-    // Keep the structure but users won't have carBooking/packageBook anymore
-    // Future enhancement: Fetch bookings from backend separately for admin dashboard
+    users.forEach((user) => {
+      // Add car bookings with type marker
+      if (user.carBooking && Array.isArray(user.carBooking)) {
+        user.carBooking.forEach((booking) => {
+          all.push({
+            ...booking,
+            type: "car",
+          });
+        });
+      }
+
+      // Add package bookings with type marker
+      if (user.packageBook && Array.isArray(user.packageBook)) {
+        user.packageBook.forEach((booking) => {
+          all.push({
+            ...booking,
+            type: "package",
+          });
+        });
+      }
+    });
 
     const totalBookings = all.length;
     const totalRevenue = all.reduce((s, b) => s + (Number(b.price) || 0), 0);

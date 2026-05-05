@@ -114,12 +114,25 @@ exports.getAllAdminHistory = async (req, res, next) => {
       };
     });
 
-    // Step 4: Calculate summary statistics
+    // Step 4: Calculate summary statistics including revenue
+    const totalCarRevenue = carBookings.reduce(
+      (sum, booking) => sum + (Number(booking.price) || 0),
+      0,
+    );
+    const totalPackageRevenue = packageBookings.reduce(
+      (sum, booking) => sum + (Number(booking.price) || 0),
+      0,
+    );
+    const totalRevenue = totalCarRevenue + totalPackageRevenue;
+
     const summary = {
       totalUsers: allUsers.length,
       totalCarBookings: carBookings.length,
       totalPackageBookings: packageBookings.length,
       totalBookings: carBookings.length + packageBookings.length,
+      totalCarRevenue: totalCarRevenue,
+      totalPackageRevenue: totalPackageRevenue,
+      totalRevenue: totalRevenue,
     };
 
     res.status(200).json({
