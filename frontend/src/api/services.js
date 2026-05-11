@@ -235,6 +235,20 @@ export async function sendEmail(emailData) {
     .catch(() => ({ error: true, message: "Network Error" }));
 }
 
+// ===== CONTACT FORM =====
+export async function submitContact(contactData) {
+  return await fetchJson("contact", {
+    method: "POST",
+    body: JSON.stringify(contactData),
+  });
+}
+
+export async function getContactInfo() {
+  return await fetchJson("contact/info", {
+    method: "GET",
+  });
+}
+
 export async function createOrder(orderData) {
   return await fetchJson("payment/create-order", {
     method: "POST",

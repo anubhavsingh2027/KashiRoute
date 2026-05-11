@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendEmail } from "../api/services.js";
+import { submitContact } from "../api/services.js";
 import "../styles.css";
 
 export default function ContactPage() {
@@ -27,22 +27,16 @@ export default function ContactPage() {
     setSuccess("");
 
     try {
-      const response = await sendEmail({
-        to: formData.email,
+      const response = await submitContact({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
         subject: formData.subject,
-        message: `
-          <h3>Contact Form Submission</h3>
-          <p><strong>Name:</strong> ${formData.name}</p>
-          <p><strong>Email:</strong> ${formData.email}</p>
-          <p><strong>Phone:</strong> ${formData.phone}</p>
-          <p><strong>Subject:</strong> ${formData.subject}</p>
-          <p><strong>Message:</strong></p>
-          <p>${formData.message.replace(/\n/g, "<br>")}</p>
-        `,
+        message: formData.message,
       });
 
-      if (response?.status || !response?.error) {
-        setSuccess("Message sent successfully! We'll get back to you soon.");
+      if (response?.success) {
+        setSuccess(response?.message || "Message sent successfully! We'll get back to you soon.");
         setFormData({
           name: "",
           email: "",
@@ -51,10 +45,11 @@ export default function ContactPage() {
           message: "",
         });
       } else {
-        setError(response?.message || "Failed to send message");
+        setError(response?.error || "Failed to send message");
       }
     } catch (err) {
       setError("Network error. Please try again.");
+      console.error("Contact form error:", err);
     } finally {
       setLoading(false);
     }

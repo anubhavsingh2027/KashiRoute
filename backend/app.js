@@ -16,6 +16,7 @@ const authRouter = require("./router/AuthRouter");
 const adminSetRouter = require("./router/adminResourcesSet");
 const paymentRouter = require("./router/paymentRouter");
 const startRouter = require("./router/startRouter");
+const contactRouter = require("./router/contactRouter");
 const mongoDb = require("./config/db");
 
 // ===== App & DB setup =====
@@ -49,6 +50,7 @@ app.use(
 // ===== ROUTES =====
 app.use("/", startRouter);
 app.use("/KashiRoute", fetchRouter);
+app.use("/KashiRoute", contactRouter);
 app.use("/KashiRoute/admin", adminSetRouter);
 app.use("/KashiRoute", authRouter);
 app.use("/KashiRoute", bookRouter);
