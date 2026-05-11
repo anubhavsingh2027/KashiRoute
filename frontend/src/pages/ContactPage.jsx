@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { submitContact } from "../api/services.js";
+import { useState, useEffect } from "react";
+import { submitContact, getContactInfo } from "../api/services.js";
 import "../styles.css";
 
 export default function ContactPage() {
@@ -13,6 +13,37 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [contactInfo, setContactInfo] = useState({
+    location: "Varanasi, Uttar Pradesh, India",
+    email: "support@kashiroute.com",
+    phone: "+91 XXXX XXX XXXX",
+    businessHours: "Monday - Sunday, 24 Hours Open",
+    socialMedia: {
+      facebook: "#",
+      twitter: "#",
+      instagram: "#",
+      youtube: "#",
+    },
+  });
+  const [loadingInfo, setLoadingInfo] = useState(true);
+
+  // Fetch contact info on mount
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const response = await getContactInfo();
+        if (response?.success && response?.contactInfo) {
+          setContactInfo(response.contactInfo);
+        }
+      } catch (err) {
+        console.error("Failed to fetch contact info:", err);
+      } finally {
+        setLoadingInfo(false);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +67,10 @@ export default function ContactPage() {
       });
 
       if (response?.success) {
-        setSuccess(response?.message || "Message sent successfully! We'll get back to you soon.");
+        setSuccess(
+          response?.message ||
+            "Message sent successfully! We'll get back to you soon.",
+        );
         setFormData({
           name: "",
           email: "",
@@ -86,9 +120,8 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold text-gray-800 mb-1">Location</h4>
                     <p className="text-gray-600">
-                      Varanasi, Uttar Pradesh
-                      <br />
-                      India
+                      {contactInfo?.location ||
+                        "Varanasi, Uttar Pradesh, India"}
                     </p>
                   </div>
                 </div>
@@ -102,7 +135,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold text-gray-800 mb-1">Phone</h4>
                     <p className="text-gray-600">
-                      +91 XXXX XXX XXXX
+                      {contactInfo?.phone || "+91 XXXX XXX XXXX"}
                       <br />
                       Available 24/7
                     </p>
@@ -118,9 +151,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="font-bold text-gray-800 mb-1">Email</h4>
                     <p className="text-gray-600">
-                      info@kashiroute.com
-                      <br />
-                      support@kashiroute.com
+                      {contactInfo?.email || "support@kashiroute.com"}
                     </p>
                   </div>
                 </div>
@@ -136,9 +167,8 @@ export default function ContactPage() {
                       Business Hours
                     </h4>
                     <p className="text-gray-600">
-                      Monday - Sunday
-                      <br />
-                      24 Hours Open
+                      {contactInfo?.businessHours ||
+                        "Monday - Sunday, 24 Hours Open"}
                     </p>
                   </div>
                 </div>
@@ -152,25 +182,25 @@ export default function ContactPage() {
               </h3>
               <div className="flex gap-4">
                 <a
-                  href="#"
+                  href={contactInfo?.socialMedia?.facebook || "#"}
                   className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white hover:shadow-lg transition"
                 >
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a
-                  href="#"
+                  href={contactInfo?.socialMedia?.twitter || "#"}
                   className="w-12 h-12 bg-blue-400 rounded-lg flex items-center justify-center text-white hover:shadow-lg transition"
                 >
                   <i className="fab fa-twitter"></i>
                 </a>
                 <a
-                  href="#"
+                  href={contactInfo?.socialMedia?.instagram || "#"}
                   className="w-12 h-12 bg-pink-600 rounded-lg flex items-center justify-center text-white hover:shadow-lg transition"
                 >
                   <i className="fab fa-instagram"></i>
                 </a>
                 <a
-                  href="#"
+                  href={contactInfo?.socialMedia?.youtube || "#"}
                   className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center text-white hover:shadow-lg transition"
                 >
                   <i className="fab fa-youtube"></i>

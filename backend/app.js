@@ -35,14 +35,12 @@ app.use(express.json({ verify: rawBodySaver }));
 app.use(cookieParser());
 
 // ===== CORS setup (CRITICAL) =====
-const development_url=process.env.development_url;
-const production_url=process.env.production_url;
-const state=process.env.NODE_ENV;
+const development_url = process.env.development_url;
+const production_url = process.env.production_url;
+const state = process.env.NODE_ENV;
 app.use(
   cors({
-    origin: [
- state=="production"?production_url:development_url
-    ],
+    origin: [state == "production" ? production_url : development_url],
     credentials: true,
   }),
 );
@@ -58,7 +56,7 @@ app.use("/KashiRoute/payment", paymentRouter);
 
 // ===== Start server =====
 
-app.listen(port, async() => {
+app.listen(port, async () => {
   await mongoDb();
   console.log(`Server Running`);
 });

@@ -162,7 +162,10 @@ exports.submitContactForm = async (req, res) => {
     });
 
     if (!adminEmailResult.success) {
-      console.error("Failed to send admin notification email:", adminEmailResult);
+      console.error(
+        "Failed to send admin notification email:",
+        adminEmailResult,
+      );
       // Don't fail the request, as user email was already sent
       return res.status(200).json({
         success: true,
@@ -183,7 +186,8 @@ exports.submitContactForm = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "An unexpected error occurred. Please try again later.",
-      details: process.env.NODE_ENV === "development" ? error.message : undefined,
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };
