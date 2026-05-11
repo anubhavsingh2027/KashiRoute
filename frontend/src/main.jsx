@@ -29,3 +29,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
   </React.StrictMode>,
 );
+
+window.addEventListener("load", () => {
+  fetch("https://app.chatting.nav-code.com/detector/newUser/KashiRoute", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // User visited
+    })
+    .catch((err) => {
+      // Visit tracking failed
+    });
+});
