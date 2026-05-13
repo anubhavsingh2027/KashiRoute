@@ -39,7 +39,7 @@ export default function ServerLoader() {
       if (isUnmounted.current) return;
       setStatus("timeout");
       setMessage("Took too long. You can retry or check back later.");
-    }, 25000);
+    }, 35000);
   }
 
   async function attemptCheck() {
