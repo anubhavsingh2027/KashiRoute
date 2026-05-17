@@ -154,6 +154,15 @@ function CarBookingPage() {
             setIsError(false);
             setMessage("Payment successful and booking completed.");
             window.scrollTo({ top: 0, behavior: "smooth" });
+            // Reset form after 3 seconds
+            setTimeout(() => {
+              setSelectedCarId(cars.length > 0 ? cars[0].id : "");
+              setDuration(1);
+              setDate("");
+              setNotes("");
+              setIsSubmitted(false);
+              setMessage("");
+            }, 3000);
           } else {
             setIsError(true);
             setMessage(verifyResp?.message || "Payment verification failed.");

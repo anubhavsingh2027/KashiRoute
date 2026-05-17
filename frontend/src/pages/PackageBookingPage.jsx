@@ -151,6 +151,15 @@ function PackageBookingPage() {
             setIsError(false);
             setMessage("Payment successful and booking completed.");
             window.scrollTo({ top: 0, behavior: "smooth" });
+            // Reset form after 3 seconds
+            setTimeout(() => {
+              setSelectedPackageId(packages.length > 0 ? packages[0].id : "");
+              setGuestCount(2);
+              setArrivalDate("");
+              setNotes("");
+              setIsSubmitted(false);
+              setMessage("");
+            }, 3000);
           } else {
             setIsError(true);
             setMessage(verifyResp?.message || "Payment verification failed.");
