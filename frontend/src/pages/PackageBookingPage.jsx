@@ -215,7 +215,7 @@ function PackageBookingPage() {
             Guests
             <input
               type="number"
-              min="1"
+              placeholder="Enter number of guests"
               value={guestCount}
               onChange={(event) =>
                 setGuestCount(Number(event.target.value) || 1)

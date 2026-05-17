@@ -218,7 +218,7 @@ function CarBookingPage() {
             Number of days
             <input
               type="number"
-              min="1"
+              placeholder="Enter number days"
               value={duration}
               onChange={(event) => setDuration(Number(event.target.value) || 1)}
             />
