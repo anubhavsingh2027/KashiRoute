@@ -29,7 +29,7 @@ export default function LoginPage() {
       if (response?.status && response?.user) {
         // Store user in auth context
         login(response.user);
-        setSuccess("Login successful! Redirecting...");
+        setSuccess(response.message || "Login successful! Redirecting...");
         setTimeout(() => navigate("/home"), 1500);
       } else {
         // Check if email verification is required

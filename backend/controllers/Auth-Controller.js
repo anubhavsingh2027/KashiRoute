@@ -438,12 +438,21 @@ exports.postLogin = async (req, res) => {
     const cookieOpts = getCookieOptions(req);
     res.cookie("token", token, cookieOpts);
 
+   if(safeUser.userType === "host"){
     res.status(200).json({
       status: true,
-      message: `Welcome again Mrs/Mr  ${user.userName}`,
+      message: `Hello host Mr./Mrs. ${safeUser.userName}! .`,
       isLoggedIn: true,
       user: safeUser,
     });
+   } else {
+    res.status(200).json({
+      status: true,
+      message: `Welcome back, ${safeUser.userName}!`,
+      isLoggedIn: true,
+      user: safeUser,
+    });
+   }
   } catch (err) {
     res
       .status(500)

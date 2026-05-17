@@ -4,6 +4,9 @@ const bookRouter = express.Router();
 
 // Local Module
 const bookController = require("../controllers/userController.js");
+const { userAuth } = require("../middleware/authMiddlleware-user");
+
+bookRouter.use(userAuth);
 
 // === BOOKING ENDPOINTS ===
 // Book package and car
