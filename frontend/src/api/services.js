@@ -266,3 +266,23 @@ export async function verifyPayment(verifyData) {
 export async function getRazorpayKey() {
   return await fetchJson("payment/razorpay-key");
 }
+
+// ===== CHATBOT =====
+export async function sendChatbotMessage(question) {
+  return await fetchJson("chatbot", {
+    method: "POST",
+    body: JSON.stringify({ question }),
+  });
+}
+
+export async function getChatHistory() {
+  return await fetchJson("chatbot/history");
+}
+
+export async function getSessionChat(sessionId) {
+  return await fetchJson(`chatbot/session/${sessionId}`);
+}
+
+export async function clearChatHistory() {
+  return await fetchJson("chatbot/clear", { method: "DELETE" });
+}

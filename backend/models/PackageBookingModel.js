@@ -1,4 +1,9 @@
 const mongoose = require("mongoose");
+const {
+  deleteCache,
+  deleteCacheByPattern,
+  CACHE_CONFIG,
+} = require("../utils/cacheUtils");
 
 const packageBookingSchema = new mongoose.Schema(
   {
@@ -44,5 +49,56 @@ const packageBookingSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+/**
+ * Middleware: Clear cache after saving new booking or updating existing booking
+ */
+packageBookingSchema.post("save", async function () {
+  try {
+    // Invalidate booking cache
+    await deleteCache(CACHE_CONFIG.bookings.key);
+    await deleteCacheByPattern(`${CACHE_CONFIG.bookingsById.prefix}*`);
+    console.log("Package booking cache invalidated after save");
+  } catch (err) {
+    console.error("Error invalidating package booking cache after save:", err);
+  }
+});
+
+/**
+ * Middleware: Clear cache after finding and removing or updating
+ */
+packageBookingSchema.post(
+  ["findByIdAndDelete", "findByIdAndUpdate", "findOneAndDelete"],
+  async function () {
+    try {
+      // Invalidate booking cache
+      await deleteCache(CACHE_CONFIG.bookings.key);
+      await deleteCacheByPattern(`${CACHE_CONFIG.bookingsById.prefix}*`);
+      console.log("Package booking cache invalidated after delete/update");
+    } catch (err) {
+      console.error(
+        "Error invalidating package booking cache after delete/update:",
+        err,
+      );
+    }
+  },
+);
+
+/**
+ * Middleware: Clear cache after updateMany
+ */
+packageBookingSchema.post("updateMany", async function () {
+  try {
+    // Invalidate booking cache
+    await deleteCache(CACHE_CONFIG.bookings.key);
+    await deleteCacheByPattern(`${CACHE_CONFIG.bookingsById.prefix}*`);
+    console.log("Package booking cache invalidated after updateMany");
+  } catch (err) {
+    console.error(
+      "Error invalidating package booking cache after updateMany:",
+      err,
+    );
+  }
+});
 
 module.exports = mongoose.model("PackageBooking", packageBookingSchema);

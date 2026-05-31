@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 // Removed local sample data import — initialize empty and rely on API
 import {
   bookPackage,
@@ -39,6 +39,8 @@ function PackageBookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const packageIdFromUrl = searchParams.get("id");
 
   useEffect(() => {
     async function load() {
@@ -58,14 +60,27 @@ function PackageBookingPage() {
         if (items.length > 0) {
           const normalized = items.map(normalizePackage);
           setPackages(normalized);
-          setSelectedPackageId(normalized[0].id);
+
+          // Pre-select package from URL if provided
+          if (packageIdFromUrl) {
+            const foundPackage = normalized.find(
+              (pkg) => pkg.id === packageIdFromUrl,
+            );
+            if (foundPackage) {
+              setSelectedPackageId(packageIdFromUrl);
+            } else {
+              setSelectedPackageId(normalized[0].id);
+            }
+          } else {
+            setSelectedPackageId(normalized[0].id);
+          }
         }
       }
       setIsLoading(false);
     }
 
     load();
-  }, []);
+  }, [packageIdFromUrl]);
 
   const selectedPackage = useMemo(
     () => packages.find((pkg) => pkg.id === selectedPackageId) || packages[0],

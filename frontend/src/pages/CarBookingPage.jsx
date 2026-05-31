@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 // Removed local sample data import — initialize empty and rely on API
 import {
   bookingCar,
@@ -38,6 +38,8 @@ function CarBookingPage() {
   const [user, setUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const carIdFromUrl = searchParams.get("id");
 
   useEffect(() => {
     async function load() {
@@ -57,14 +59,25 @@ function CarBookingPage() {
         if (items.length > 0) {
           const normalized = items.map(normalizeCar);
           setCars(normalized);
-          setSelectedCarId(normalized[0].id);
+
+          // Pre-select car from URL if provided
+          if (carIdFromUrl) {
+            const foundCar = normalized.find((car) => car.id === carIdFromUrl);
+            if (foundCar) {
+              setSelectedCarId(carIdFromUrl);
+            } else {
+              setSelectedCarId(normalized[0].id);
+            }
+          } else {
+            setSelectedCarId(normalized[0].id);
+          }
         }
       }
       setIsLoading(false);
     }
 
     load();
-  }, []);
+  }, [carIdFromUrl]);
 
   const selectedCar = useMemo(
     () => cars.find((car) => car.id === selectedCarId) || cars[0],

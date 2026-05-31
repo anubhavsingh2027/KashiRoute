@@ -1,8 +1,8 @@
-# 🌍 KashiRoute
+# 🌍 KashiRoute - AI Powered Booking System
 
-**KashiRoute** is a travel and tour service platform based in **Varanasi (Kashi)**.
+**KashiRoute** is an AI-powered travel and tour booking platform based in **Varanasi (Kashi)**.
 The name **KashiRoute** represents that **every travel package and journey offered through this platform begins from Kashi.**
-Our goal is to provide comfortable, affordable, and well-organized tours starting from one of India's oldest and most spiritual cities.
+Our goal is to provide comfortable, affordable, and well-organized tours starting from one of India's oldest and most spiritual cities with intelligent AI-assisted booking.
 
 ---
 
@@ -20,19 +20,20 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 
 ## 🏠 User Features
 
-| Feature                             | Description                                                                                    |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Home Page**                       | Modern and visually appealing introduction to Kashi and our services                           |
-| **About Us**                        | Information about KashiRoute and our travel approach                                           |
-| **Packages**                        | Browse travel packages — every package starts from Kashi                                       |
-| **Cars**                            | Explore cars available for hire for city and outstation travel                                 |
-| **Book Package**                    | Book your preferred travel package easily                                                      |
-| **Book Car**                        | Rent a car with required details and pricing                                                   |
-| **Booking History**                 | Users can check all past bookings anytime                                                      |
-| **Contact Page**                    | Users can send queries or contact the support team                                             |
-| **User Forgot Password**            | Secure authentication and recovery                                                             |
-| **📧 OTP Verification**             | OTP is sent to user's email via **custom Mail API** during authentication or sensitive actions |
-| **🔔 Booking Update Notifications** | Booking confirmation and status updates are automatically emailed to the user                  |
+| Feature                             | Description                                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Home Page**                       | Modern and visually appealing introduction to Kashi and our services                                  |
+| **About Us**                        | Information about KashiRoute and our travel approach                                                  |
+| **Packages**                        | Browse travel packages — every package starts from Kashi                                              |
+| **Cars**                            | Explore cars available for hire for city and outstation travel                                        |
+| **Book Package**                    | Book your preferred travel package easily                                                             |
+| **Book Car**                        | Rent a car with required details and pricing                                                          |
+| **Booking History**                 | Users can check all past bookings anytime                                                             |
+| **Contact Page**                    | Users can send queries or contact the support team                                                    |
+| **User Forgot Password**            | Secure authentication and recovery                                                                    |
+| **🤖 AI Powered Booking System**    | Intelligent booking system powered by Grok AI for instant travel assistance and smart recommendations |
+| **📧 OTP Verification**             | OTP is sent to user's email via **custom Mail API** during authentication or sensitive actions        |
+| **🔔 Booking Update Notifications** | Booking confirmation and status updates are automatically emailed to the user                         |
 
 ---
 
@@ -58,6 +59,8 @@ Our goal is to provide comfortable, affordable, and well-organized tours startin
 | **Frontend**                 | HTML, Tailwind CSS, JavaScript            |
 | **Backend**                  | Node.js, Express.js                       |
 | **Database**                 | MongoDB                                   |
+| **Caching**                  | Redis (Session & Data Caching)            |
+| **AI Integration**           | Grok AI API (Chatbot & Intent Detection)  |
 | **Email Notification / OTP** | Custom Mail API (Node Mailer API / SMTP)  |
 | **Authentication**           | JWT / Sessions                            |
 | **Payment Gateway**          | Razorpay API                              |

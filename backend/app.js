@@ -17,7 +17,9 @@ const adminSetRouter = require("./router/adminResourcesSet");
 const paymentRouter = require("./router/paymentRouter");
 const startRouter = require("./router/startRouter");
 const contactRouter = require("./router/contactRouter");
+const chatbotRouter = require("./router/chatbot.router");
 const mongoDb = require("./config/db");
+const redisClient = require("./config/redis"); // Redis initialization
 
 // ===== App & DB setup =====
 const app = express();
@@ -48,6 +50,7 @@ app.use(
 // ===== ROUTES =====
 app.use("/", startRouter);
 app.use("/KashiRoute", fetchRouter);
+app.use("/KashiRoute", chatbotRouter);
 app.use("/KashiRoute", contactRouter);
 app.use("/KashiRoute/admin", adminSetRouter);
 app.use("/KashiRoute", authRouter);
@@ -58,5 +61,6 @@ app.use("/KashiRoute/payment", paymentRouter);
 
 app.listen(port, async () => {
   await mongoDb();
+  // Redis is automatically initialized when config/redis.js is imported
   console.log(`Server Running`);
 });

@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import ChatBubbleButton from "./ChatbotWidget";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -194,6 +195,7 @@ function Layout() {
           </div>
         </div>
       </motion.footer>
+      <ChatBubbleButton />
     </div>
   );
 }

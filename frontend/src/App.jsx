@@ -15,6 +15,7 @@ import PackageDetailsPage from "./pages/PackageDetailsPage";
 import UserHistoryPage from "./pages/UserHistoryPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import ChatbotPage from "./pages/ChatbotPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 // Admin Pages
@@ -61,6 +62,9 @@ function App() {
         <Route path="user-history" element={<UserHistoryPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="chatbot" element={<ChatbotPage />} />
+        <Route path="chat" element={<ChatbotPage />} />
+        <Route path="assistant" element={<ChatbotPage />} />
 
         {/* Admin Pages */}
         <Route path="adminHistory" element={<AdminHistoryPage />} />

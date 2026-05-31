@@ -73,6 +73,7 @@ function Navbar() {
     { label: "Cars", to: "/carDetails", icon: "fas fa-car" },
     { label: "Packages", to: "/packageDetails", icon: "fas fa-box" },
     { label: "Contact", to: "/contact", icon: "fas fa-envelope" },
+    { label: "Chat", to: "/chatbot", icon: "fas fa-message" },
   ];
 
   const userLinks = user
