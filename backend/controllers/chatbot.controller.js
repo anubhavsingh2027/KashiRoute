@@ -350,12 +350,20 @@ exports.postChatbot = async (req, res) => {
     // ===== PHASE 2: NON-LOGGED-IN USER (NO TOKEN) =====
 
     // Get or generate session ID
-    let sessionId = req.cookies.chatbotSessionId;
+    let sessionId = req.cookies && req.cookies.chatbotSessionId;
 
-    if (!sessionId) {
+    // Treat empty, whitespace, or string 'undefined'/'null' as missing
+    const invalidCookieValues = [undefined, null, "", "undefined", "null"];
+    if (
+      typeof sessionId !== "string" ||
+      invalidCookieValues.includes(sessionId) ||
+      sessionId.trim() === ""
+    ) {
       // Generate new session ID
       sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     } else {
+      // Normalize existing session id
+      sessionId = sessionId.trim();
     }
 
     // Set session cookie for guest
