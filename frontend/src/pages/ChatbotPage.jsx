@@ -233,21 +233,24 @@ export default function ChatbotPage() {
   // Initialize session
   useEffect(() => {
     setIsMounted(true);
-    
+
     const initializeChat = async () => {
       if (authUser && authUser._id) {
         // User is logged in - load chat history
         loadChatHistory();
       } else {
         // Non-logged-in user - try to load previous session chat
-        const cookieSession = (getCookieValue("chatbotSessionId") || "").trim();
-        if (cookieSession) {
+        const raw = getCookieValue("chatbotSessionId");
+        const cookieSession = (raw || "").trim();
+        // Treat these string values as invalid/missing
+        const invalidValues = ["", "undefined", "null"];
+        if (cookieSession && !invalidValues.includes(cookieSession.toLowerCase())) {
           setSessionId(cookieSession);
           await loadSessionChat(cookieSession);
         }
       }
     };
-    
+
     initializeChat();
 
     return () => {
