@@ -5,19 +5,6 @@ const API_BASE =
 
 const MAIL_API = import.meta.env.VITE_MAIL_API;
 
-// Helper function to get cookie value by name
-const getCookieValue = (name) => {
-  const nameEQ = name + "=";
-  const cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-    if (cookie.startsWith(nameEQ)) {
-      return decodeURIComponent(cookie.substring(nameEQ.length));
-    }
-  }
-  return null;
-};
-
 export async function getCheck() {
   try {
     const res = await fetch(`${API_BASE}check`, {
@@ -293,17 +280,12 @@ export async function getChatHistory() {
 }
 
 export async function getSessionChat(sessionId) {
-  // If sessionId not provided, try to get from cookies (for non-logged-in users)
   if (!sessionId) {
-    sessionId = getCookieValue("chatbotSessionId");
+    return { error: true, message: "Missing sessionId" };
   }
-
-  // If still no sessionId, return error
-  if (!sessionId) {
-    return { error: true, message: "No session ID found for guest user" };
-  }
-
-  return await fetchJson(`chatbot/session/${sessionId}`);
+  // encode sessionId to avoid issues with special characters
+  const encoded = encodeURIComponent(sessionId);
+  return await fetchJson(`chatbot/session/${encoded}`);
 }
 
 export async function clearChatHistory() {

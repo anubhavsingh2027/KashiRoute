@@ -235,20 +235,15 @@ export default function ChatbotPage() {
     setIsMounted(true);
     
     const initializeChat = async () => {
-      // Wait for auth to finish loading
-      if (authLoading) {
-        return;
-      }
-
       if (authUser && authUser._id) {
         // User is logged in - load chat history
         loadChatHistory();
       } else {
         // Non-logged-in user - try to load previous session chat
-        const sessionId = getCookieValue("chatbotSessionId");
-        if (sessionId) {
-          setSessionId(sessionId);
-          await loadSessionChat(sessionId);
+        const cookieSession = (getCookieValue("chatbotSessionId") || "").trim();
+        if (cookieSession) {
+          setSessionId(cookieSession);
+          await loadSessionChat(cookieSession);
         }
       }
     };
@@ -258,14 +253,7 @@ export default function ChatbotPage() {
     return () => {
       setIsMounted(false);
     };
-  }, [authUser, authLoading]);
-
-  // Load session chat history when sessionId is first set/updated (for non-logged-in users)
-  useEffect(() => {
-    if (sessionId && !authUser) {
-      loadSessionChat(sessionId);
-    }
-  }, [sessionId]);
+  }, [authUser]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -321,6 +309,10 @@ export default function ChatbotPage() {
         ]);
         if (isMounted) {
           setMessages(formattedMessages);
+          // ensure state sessionId matches the server (in case cookie was missing)
+          if (!session && response.sessionId) {
+            setSessionId(response.sessionId);
+          }
         }
       }
     } catch (error) {
