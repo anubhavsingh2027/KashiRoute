@@ -260,6 +260,13 @@ export default function ChatbotPage() {
     };
   }, [authUser, authLoading]);
 
+  // Load session chat history when sessionId is first set/updated (for non-logged-in users)
+  useEffect(() => {
+    if (sessionId && !authUser) {
+      loadSessionChat(sessionId);
+    }
+  }, [sessionId]);
+
   // Scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
