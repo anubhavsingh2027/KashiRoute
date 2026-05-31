@@ -675,6 +675,59 @@ exports.getSessionChat = async (req, res) => {
 };
 
 /**
+ * GET /chatbot/session/history
+ * Get chat history for NON-LOGGED-IN users using sessionId from cookie
+ *
+ * PHASE 2 ENDPOINT: For guest users (without URL parameter)
+ * - Reads sessionId from req.cookies.chatbotSessionId
+ * - Returns all chat messages associated with that session
+ * - Does NOT require authentication
+ * - SessionId persists for 30 days
+ */
+exports.getSessionHistory = async (req, res) => {
+  try {
+     const  sessionId  = req.cookies.chatbotSessionId;
+
+    // Validate session ID from cookie
+    const invalidCookieValues = [undefined, null, "", "undefined", "null"];
+    if (
+      typeof sessionId !== "string" ||
+      invalidCookieValues.includes(sessionId) ||
+      sessionId.trim() === ""
+    ) {
+      return res.status(400).json({
+        status: false,
+        message: "Session ID not found in cookies",
+      });
+    }
+
+    const normalizedSessionId = sessionId.trim();
+
+    // Fetch chat history for this session (PHASE 2 - GUEST ONLY) - Oldest to newest
+    const chatHistory = await ChatBot.find({
+      sessionId: normalizedSessionId,
+      userMode: "notLogin",
+    })
+      .select("question answer language createdAt")
+      .sort({ createdAt: 1 })
+      .lean();
+
+    return res.status(200).json({
+      status: true,
+      sessionId: normalizedSessionId,
+      data: chatHistory,
+    });
+  } catch (error) {
+    console.error("Error in getSessionHistory:", error);
+    return res.status(500).json({
+      status: false,
+      message: "Error fetching session history",
+      error: error.message,
+    });
+  }
+};
+
+/**
  * DELETE /chatbot/clear
  * Clear chat history for LOGGED-IN users only
  *

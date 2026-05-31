@@ -280,8 +280,11 @@ export async function getChatHistory() {
 }
 
 export async function getSessionChat(sessionId) {
-
   return await fetchJson(`chatbot/session/${sessionId}`);
+}
+
+export async function getSessionHistory() {
+  return await fetchJson("chatbot/session/history");
 }
 
 export async function clearChatHistory() {

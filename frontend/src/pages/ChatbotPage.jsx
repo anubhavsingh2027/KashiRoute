@@ -10,23 +10,11 @@ import {
   sendChatbotMessage,
   getChatHistory,
   getSessionChat,
+  getSessionHistory,
   clearChatHistory,
 } from "../api/services";
 import Toast from "../components/Toast";
 import "./ChatbotPage.css";
-
-// Helper function to get cookie value by name
-const getCookieValue = (name) => {
-  const nameEQ = name + "=";
-  const cookies = document.cookie.split(";");
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-    if (cookie.startsWith(nameEQ)) {
-      return decodeURIComponent(cookie.substring(nameEQ.length));
-    }
-  }
-  return null;
-};
 
 // Function to render message with markdown-like formatting
 const renderMessage = (text) => {
@@ -239,19 +227,8 @@ export default function ChatbotPage() {
         // User is logged in - load chat history
         loadChatHistory();
       } else {
-        // Non-logged-in user - try to load previous session chat
-        const raw = getCookieValue("chatbotSessionId");
-        console.log("Found chatbotSessionId cookie:", raw);
-        const cookieSession = (raw || "").trim();
-        // Treat these string values as invalid/missing
-        const invalidValues = ["", "undefined", "null"];
-        if (
-          cookieSession &&
-          !invalidValues.includes(cookieSession.toLowerCase())
-        ) {
-          setSessionId(cookieSession);
-          await loadSessionChat(cookieSession);
-        }
+        // Non-logged-in user - load session history from cookie
+        await loadSessionHistoryFromCookie();
       }
     };
 
@@ -324,6 +301,27 @@ export default function ChatbotPage() {
       }
     } catch (error) {
       console.error("Error loading session chat:", error);
+    }
+  };
+
+  const loadSessionHistoryFromCookie = async () => {
+    try {
+      const response = await getSessionHistory();
+      if (response.status && response.data) {
+        const formattedMessages = response.data.flatMap((msg, idx) => [
+          { id: `sess-q-${idx}`, type: "user", text: msg.question },
+          { id: `sess-a-${idx}`, type: "bot", text: msg.answer },
+        ]);
+        if (isMounted) {
+          setMessages(formattedMessages);
+          // Update sessionId from response if available
+          if (response.sessionId) {
+            setSessionId(response.sessionId);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error loading session history:", error);
     }
   };
 
