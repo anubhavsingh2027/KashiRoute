@@ -241,10 +241,14 @@ export default function ChatbotPage() {
       } else {
         // Non-logged-in user - try to load previous session chat
         const raw = getCookieValue("chatbotSessionId");
+        console.log("Found chatbotSessionId cookie:", raw);
         const cookieSession = (raw || "").trim();
         // Treat these string values as invalid/missing
         const invalidValues = ["", "undefined", "null"];
-        if (cookieSession && !invalidValues.includes(cookieSession.toLowerCase())) {
+        if (
+          cookieSession &&
+          !invalidValues.includes(cookieSession.toLowerCase())
+        ) {
           setSessionId(cookieSession);
           await loadSessionChat(cookieSession);
         }

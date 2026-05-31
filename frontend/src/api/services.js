@@ -280,12 +280,8 @@ export async function getChatHistory() {
 }
 
 export async function getSessionChat(sessionId) {
-  if (!sessionId) {
-    return { error: true, message: "Missing sessionId" };
-  }
-  // encode sessionId to avoid issues with special characters
-  const encoded = encodeURIComponent(sessionId);
-  return await fetchJson(`chatbot/session/${encoded}`);
+
+  return await fetchJson(`chatbot/session/${sessionId}`);
 }
 
 export async function clearChatHistory() {
