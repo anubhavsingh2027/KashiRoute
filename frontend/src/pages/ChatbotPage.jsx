@@ -235,6 +235,11 @@ export default function ChatbotPage() {
     setIsMounted(true);
     
     const initializeChat = async () => {
+      // Wait for auth to finish loading
+      if (authLoading) {
+        return;
+      }
+
       if (authUser && authUser._id) {
         // User is logged in - load chat history
         loadChatHistory();
@@ -253,7 +258,7 @@ export default function ChatbotPage() {
     return () => {
       setIsMounted(false);
     };
-  }, [authUser]);
+  }, [authUser, authLoading]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
