@@ -124,34 +124,7 @@ exports.getPackageById = async (req, res, next) => {
   }
 };
 
-/**
- * Get all users with caching
- * Cache TTL: 30 minutes
- */
-exports.getUser = async (req, res, next) => {
-  try {
-    const cacheKey = CACHE_CONFIG.userDetails.key;
 
-    // Try to get from cache first
-    let fetchUser = await getCache(cacheKey);
-
-    // If not in cache, fetch from database
-    if (!fetchUser) {
-      fetchUser = await userDetailsModel
-        .find()
-        .select("userName email phone location userType");
-      // Store in cache for future requests
-      if (fetchUser && fetchUser.length > 0) {
-        await setCache(cacheKey, fetchUser, CACHE_CONFIG.userDetails.ttl);
-      }
-    }
-
-    res.json(fetchUser || []);
-  } catch (err) {
-    console.error("Error fetching user details:", err);
-    next(err);
-  }
-};
 
 /**
  * Get single user by ID with caching

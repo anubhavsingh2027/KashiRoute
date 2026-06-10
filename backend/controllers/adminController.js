@@ -151,3 +151,19 @@ exports.getAllAdminHistory = async (req, res, next) => {
     });
   }
 };
+
+/**
+ * Get all users (direct DB call)
+ */
+exports.getUser = async (req, res, next) => {
+  try {
+    const users = await userDetailsModel
+      .find()
+      .select("userName email phone location userType");
+
+    res.json(users || []);
+  } catch (err) {
+    console.error("Error fetching user details:", err);
+    next(err);
+  }
+};

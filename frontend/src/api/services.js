@@ -180,7 +180,7 @@ export async function cancelPackageBooking(bookingId) {
 
 // ===== ADMIN FUNCTIONS =====
 export async function getAllUsers() {
-  return await fetchJson("getUser");
+  return await fetchJson("admin/getUser");
 }
 
 export async function createCar(carData) {

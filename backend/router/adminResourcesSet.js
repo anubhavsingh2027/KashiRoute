@@ -7,7 +7,6 @@ const adminResourcesSetController = require("../controllers/adminController");
 const { adminAuth } = require("../middleware/authMiddleware-host");
 
 
-
 // Apply admin authentication middleware to all routes
 adminResourcesSetRouter.use(adminAuth);
 
@@ -28,5 +27,8 @@ adminResourcesSetRouter.get(
   "/history",
   adminResourcesSetController.getAllAdminHistory,
 );
+//USER DATA
+adminResourcesSetRouter.get("/getUser", adminResourcesSetController.getUser);
+
 
 module.exports = adminResourcesSetRouter;

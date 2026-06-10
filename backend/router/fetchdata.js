@@ -14,6 +14,6 @@ fetchRouter.get("/check",fetchController.checkAvailable);
 fetchRouter.get("/session-user",checkSession);
 fetchRouter.get("/getCar", fetchController.getCar);
 fetchRouter.get("/getPackage",fetchController.getPackages);
-fetchRouter.get("/getUser",fetchController.getUser);
+
 
 module.exports = fetchRouter;
