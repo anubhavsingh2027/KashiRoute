@@ -31,7 +31,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 );
 
 window.addEventListener("load", () => {
-  fetch("https://app.chatting.nav-code.com/detector/newUser/KashiRoute", {
+  const params = new URLSearchParams(window.location.search);
+  const source = params.get("source");
+  fetch(`https://app.chatting.nav-code.com/detector/newUser/KashiRoute?source=${source || Direct}`, {
     method: "GET",
   })
     .then((res) => res.json())

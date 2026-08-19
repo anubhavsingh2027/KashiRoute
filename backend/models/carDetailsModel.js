@@ -63,7 +63,7 @@ carSchema.post(
 );
 
 /**
- * Middleware: Clear cache after updateMany
+ * Middleware: Clear cache after updateMany}}FVFR4
  */
 carSchema.post("updateMany", async function () {
   try {
