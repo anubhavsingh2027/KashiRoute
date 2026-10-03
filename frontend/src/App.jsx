@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import ServerLoader from "./components/ServerLoader";
 
 // Pages
 
@@ -28,7 +27,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<ServerLoader />} />
+        <Route index element={<HomePage />} />
 
         {/* User Pages */}
         <Route path="home" element={<HomePage />} />
